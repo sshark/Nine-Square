@@ -25,10 +25,6 @@ object ScratchPad extends App {
     if ((numbers._2 + 1) % 3 == 0) buffer.append(sudokuLine)
   }
 
-  //  generateRandomSheet(EASY_LEVEL).grouped(9) foreach println
-
-  //  Source.fromInputStream(getClass.getResourceAsStream("/sudoku.txt")).getLines() take(10) foreach (x=> println(x.toCharArray.count(c => !('0'.equals(c)))))
-
   //  	val l = "200000015006400070300060000800300200000104000400500000000023600010000000070000000".toCharArray.map(_ - 0x30).toList
   //	val l = "001005300000490000000102064000000750600000001035000000460903000000024090003600100".toCharArray.map(_ - 0x30).toList
   //	val l = "001005000000090000000102000000000000600000001030000000460003000000004090003600100".toCharArray.map(_ - 0x30).toList
@@ -44,15 +40,16 @@ object ScratchPad extends App {
   //    val l = "..............53.89..3.8..2..9...5.7.5...2....7....69..8.....4.....43..54.2...8..".replace('.', '0').map(_ - 0x30).toList // solved 1s
 //  val l = "4...3.......6..8..........1....5..9..8....6...7.2........1.27..5.3....4.9........".replace('.', '0').map(_ - 0x30).toList // solved 1s
 
+  // obsolete
   def findGuesses(l: List[Int], pos: Int): List[Int] = (1 to 9).filter(!NineSquareUtil.isConflictAt(l, pos, _)).toList
 
+  // obsolete
   def solveAll(xs: List[Int], combinations: List[(List[Int], Int)]): Stream[List[Int]] =
     if (combinations.isEmpty) Stream(xs) else {
       val h = combinations.head
       h._1.toStream.flatMap(x => if (NineSquareUtil.isConflictAt(xs.updated(h._2, 0), h._2, x)) Nil else
         solveAll(xs.updated(h._2, x), combinations.tail))
     }
-
 
   def bigCellTranslation(pos: Int, x: Int = 0) = pos / 27 * 27 + pos / 3 % 3 * 3 + x % 3 + x / 3 * 9
 
@@ -86,27 +83,6 @@ object ScratchPad extends App {
       .collectFirst({ case es if !es.isEmpty => es }) // better/safer than != Map.empty
   }
 
-  /*
-    def search(estimates : Map[Int, List[Int]]) : Map[Int, List[Int]] =
-      if (estimates.forall{e => e._2.size == 1})
-        estimates
-      else if (estimates.exists(e => e._2.isEmpty))
-        Map.empty
-      else
-        estimates
-          .toSeq
-          .filter(_._2.size > 1)
-          .reduceOption[Entry](byNumsSize.min)
-          .map({
-            case (pos, numbers) => {
-              numbers.foldLeft(Map.empty[Int, List[Int]])((acc, i) => {
-                if (acc.isEmpty) search(eliminate(estimates.updated(pos, List(i)), pos, i))
-                else acc
-              })
-            }
-          }).get
-  */
-
   def eliminate(estimates : Map[Int, List[Int]], position : Int, num : Int) : Map[Int, List[Int]] = {
     val peerPositions = verticalMap(position) ++ horizontalMap(position) ++ bigCellMap(position)
     val targetPositions = peerPositions.filter(pos => estimates(pos).size == 2 && estimates(pos).contains(num))
@@ -114,14 +90,11 @@ object ScratchPad extends App {
     targetPositions.foldLeft(peers){case (m, pos) => if (m(pos).isEmpty) m else m ++ eliminate(m, pos, m(pos).head)}
   }
 
-
   val start = System.currentTimeMillis()
 
   print("Solving... " + l + "\n")
 
   val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
-
-  //  val solution = List(4, 6, 8, 9, 3, 1, 5, 2, 7, 7, 5, 1, 6, 2, 4, 8, 3, 9, 3, 9, 2, 5, 7, 8, 4, 6, 1, 1, 3, 4, 7, 5, 6, 2, 9, 8, 2, 8, 9, 4, 1, 3, 6, 7, 5, 6, 7, 5, 2, 8, 9, 3, 1, 4, 8, 4, 6, 1, 9, 2, 7, 5, 3, 5, 1, 3, 8, 6, 7, 9, 4, 2, 9, 2, 7, 3, 4, 5, 1, 8, 6)
 
   if (NineSquareUtil.isSheetOK(solution)) println(prettyPrint(solution)) else println(" failed")
 

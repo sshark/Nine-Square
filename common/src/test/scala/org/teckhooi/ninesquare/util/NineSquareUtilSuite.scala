@@ -107,19 +107,51 @@ class NineSquareUtilSuite extends FunSuite {
   }
 
   test("Solve easy and hard Sudoku. This test will take a while to complete") {
-    solvePuzzlesFrom("/easy.txt") // easy puzzle
-    solvePuzzlesFrom("/top95.txt")  // hardest puzzle
+    logBasicStats(solvePuzzlesUsing("/easy.txt"), "/easy.txt") // easy puzzle
+    logBasicStats(solvePuzzlesUsing("/top95.txt"), "/top95.txt")  // hardest puzzle
   }
 
-  private def solvePuzzlesFrom(filename : String ) {
-    Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().foreach {line =>
+  private def logBasicStats(durations : (Long, Long, Long), puzzle : String) {
+    val (min, max, avg) = durations
+    logger.info("It took an average of " + avg + " ms to complete a single puzzle in " + puzzle +
+      ". The maximum and minimum times taken to complete a puzzle was " + max + "ms and " + min + "ms")
+  }
+
+  private def solvePuzzlesWithActorsUsing(filename : String ) = {
+
+    val durations = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line => {
       val l = line.replace('.', '0').map(_ - 0x30).toList
 
       val localStart = System.currentTimeMillis()
 
       val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
-      if (NineSquareUtil.isSheetOK(solution)) info("Solving... " + l + " took " + (System.currentTimeMillis() - localStart) + "ms") else
+      val duration = System.currentTimeMillis() - localStart
+
+      if (NineSquareUtil.isSheetOK(solution)) info("Solving... " + l + " took " + duration + "ms") else
         fail("Failed to solve " + l)
-    }
+
+      duration
+
+    }}.toList
+    (durations.min, durations.max, (durations.sum / durations.size))
+  }
+
+  private def solvePuzzlesUsing(filename : String ) = {
+    val durations = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line => {
+      val l = line.replace('.', '0').map(_ - 0x30).toList
+
+      val localStart = System.currentTimeMillis()
+
+      val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
+      val duration = System.currentTimeMillis() - localStart
+
+      if (NineSquareUtil.isSheetOK(solution)) info("Solving... " + l + " took " + duration + "ms") else
+        fail("Failed to solve " + l)
+
+      duration
+
+    }}.toList
+    (durations.min, durations.max, (durations.sum / durations.size))
   }
 }
+

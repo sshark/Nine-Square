@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder
 import java.lang.NumberFormatException
 import java.io.File
 import javax.swing.{ImageIcon, UIManager, KeyStroke, SwingUtilities}
-import java.awt.event.KeyEvent
+import java.awt.event.{ActionEvent, KeyEvent}
 import java.awt.Color
 import scala.io.Source
 import scala.util.Random
@@ -150,16 +150,20 @@ object NineSquareApp extends SimpleSwingApplication {
     val dialogIcon = new ImageIcon(getClass.getResource("/images/nine-square_48x48.png")) // icon for dialog boxes
 
     // Help menu
-    val helpMenuItem = new MenuItem(Action("How to play...") {
-      Dialog.showMessage(null, "The objective is to fill a 9×9 grid with digits so that each\n" +
-        "column, each row, and each of the nine 3×3 sub-grids that compose\n" +
-        "the grid contains all of the digits from 1 to 9.",
-        "How to play...", Dialog.Message.Question, dialogIcon)
-    }) {
+    val helpAction = Action("How to play...") {
+      Dialog.showMessage(null,
+        "Fill in the grid so that every row, every column and every 3x3 box contains the digits 1 through 9.",
+        "How to play...",
+        Dialog.Message.Question,
+        dialogIcon)
+    }
+    helpAction.mnemonic = KeyEvent.VK_H
+    helpAction.accelerator = Some(KeyStroke.getKeyStroke("F1"))
+    val helpMenuItem = new MenuItem(helpAction) {
       mnemonic = Key.P
     }
 
-    val aboutMeuItem = new MenuItem(Action("About Nine Square") {
+    val aboutAction = Action("About Nine Square") {
       Dialog.showMessage(null, "Copyright 2013 Lim, Teck Hooi\n\n" +
         "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
         "you may not use this file except in compliance with the License.\n" +
@@ -171,9 +175,10 @@ object NineSquareApp extends SimpleSwingApplication {
         "See the License for the specific language governing permissions and\n" +
         "limitations under the License.",
         "About...", Dialog.Message.Info, dialogIcon)
-    }) {
-      mnemonic = Key.A
     }
+    aboutAction.mnemonic = KeyEvent.VK_A
+    aboutAction.accelerator = Some(KeyStroke.getKeyStroke('A', ActionEvent.CTRL_MASK))
+    val aboutMeuItem = new MenuItem(aboutAction)
 
     val helpMenu = new Menu("Help") {
       contents += helpMenuItem

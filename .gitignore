@@ -5,7 +5,7 @@ Thumbs.db
 *.ipr
 *.iws
 *.iml
-.DS_Store
+*.DS_Store
 target/
 .idea/
 .idea_modules/
