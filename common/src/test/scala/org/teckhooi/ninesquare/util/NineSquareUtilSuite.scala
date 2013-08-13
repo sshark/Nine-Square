@@ -7,6 +7,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import scala.io.Source
 import org.slf4j.LoggerFactory
+import akka.actor.{ActorRef, Props, ActorSystem}
 
 /**
  * Copyright (C) March 21, 2013
@@ -83,11 +84,15 @@ class NineSquareUtilSuite extends FunSuite {
   def logger = LoggerFactory.getLogger(getClass)
 
   test("No conflict for right sample solution sheet.") {
-     assertTrue(rightSolution.zipWithIndex.forall{ case (x, ndx) => !isConflictAt(rightSolution.updated(ndx, 0), ndx, x)})
-   }
+    assertTrue(rightSolution.zipWithIndex.forall {
+      case (x, ndx) => !isConflictAt(rightSolution.updated(ndx, 0), ndx, x)
+    })
+  }
 
   test("Conflict found for wrong solution sheet.") {
-    assertFalse(wrongSolution.zipWithIndex.forall{ case (x, ndx) => !isConflictAt(rightSolution.updated(ndx, 0), ndx, x)})
+    assertFalse(wrongSolution.zipWithIndex.forall {
+      case (x, ndx) => !isConflictAt(rightSolution.updated(ndx, 0), ndx, x)
+    })
   }
 
   test("Solve a very hard sheet.") {
@@ -107,20 +112,37 @@ class NineSquareUtilSuite extends FunSuite {
   }
 
   test("Solve easy and hard Sudoku. This test will take a while to complete") {
-    logBasicStats(solvePuzzlesUsing("/easy.txt"), "/easy.txt") // easy puzzle
-    logBasicStats(solvePuzzlesUsing("/top95.txt"), "/top95.txt")  // hardest puzzle
+    info("Solving easy puzzles...")
+    logBasicStats(solvePuzzlesFrom("/easy.txt"), "/easy.txt") // easy puzzle
+    info("Solving hard puzzles...")
+    logBasicStats(solvePuzzlesFrom("/top95.txt"), "/top95.txt") // hardest puzzle
   }
 
-  private def logBasicStats(durations : (Long, Long, Long), puzzle : String) {
+  private def logBasicStats(durations: (Long, Long, Long), puzzle: String) {
     val (min, max, avg) = durations
     logger.info("It took an average of " + avg + " ms to complete a single puzzle in " + puzzle +
       ". The maximum and minimum times taken to complete a puzzle was " + max + "ms and " + min + "ms")
   }
 
-  private def solvePuzzlesWithActorsUsing(filename : String ) = {
+  test("Solve puzzles simultaneously") {
+    val system = ActorSystem("mySystem")
+    val puzzleSolver = system.actorOf(Props[SolveNineSquareActor], "puzzleSolver")
+    //    logBasicStats(solvePuzzlesWithActorsUsing("/easy.txt", puzzleSolver), "/easy.txt") // easy puzzle
+    info("Solving easy puzzles...")
+    solvePuzzlesWithActorsUsing("/easy.txt", puzzleSolver) // easy puzzle
+    info("Solving hard puzzles...")
+    solvePuzzlesWithActorsUsing("/top95.txt", puzzleSolver) // easy puzzle
+    puzzleSolver ! SolveNineSquareActor.Completed
+    system.awaitTermination()
+  }
 
-    val durations = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line => {
-      val l = line.replace('.', '0').map(_ - 0x30).toList
+  private def solvePuzzlesWithActorsUsing(filename: String, puzzleSolver: ActorRef) = {
+    for (line <- Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines()) {
+      println("Solving " + line)
+      puzzleSolver ! SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList)
+    }
+    //    (durations.min, durations.max, (durations.sum / durations.size))
+  }
 
       val localStart = System.currentTimeMillis()
 
@@ -154,4 +176,3 @@ class NineSquareUtilSuite extends FunSuite {
     (durations.min, durations.max, (durations.sum / durations.size))
   }
 }
-
