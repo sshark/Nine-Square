@@ -8,6 +8,7 @@ import org.scalatest.FunSuite
 import scala.io.Source
 import org.slf4j.LoggerFactory
 import akka.actor.{ActorRef, Props, ActorSystem}
+import com.typesafe.config.ConfigFactory
 
 /**
  * Copyright (C) March 21, 2013
@@ -113,9 +114,9 @@ class NineSquareUtilSuite extends FunSuite {
 
   test("Solve easy and hard Sudoku. This test will take a while to complete") {
     info("Solving easy puzzles...")
-    logBasicStats(solvePuzzlesFrom("/easy.txt"), "/easy.txt") // easy puzzle
+    logBasicStats(solvePuzzlesUsing("/easy.txt"), "/easy.txt") // easy puzzle
     info("Solving hard puzzles...")
-    logBasicStats(solvePuzzlesFrom("/top95.txt"), "/top95.txt") // hardest puzzle
+    logBasicStats(solvePuzzlesUsing("/top95.txt"), "/top95.txt") // hardest puzzle
   }
 
   private def logBasicStats(durations: (Long, Long, Long), puzzle: String) {
@@ -125,37 +126,22 @@ class NineSquareUtilSuite extends FunSuite {
   }
 
   test("Solve puzzles simultaneously") {
-    val system = ActorSystem("mySystem")
-    val puzzleSolver = system.actorOf(Props[SolveNineSquareActor], "puzzleSolver")
-    //    logBasicStats(solvePuzzlesWithActorsUsing("/easy.txt", puzzleSolver), "/easy.txt") // easy puzzle
+    val system = ActorSystem("mySystem", ConfigFactory.load().getConfig("MyDispatcherExample"))
+    val puzzleSolver = system.actorOf(Props[SolveNineSquareActor].withDispatcher("pinnedDispatcher"))
     info("Solving easy puzzles...")
-    solvePuzzlesWithActorsUsing("/easy.txt", puzzleSolver) // easy puzzle
+    usingActorsToSolve("/easy.txt", puzzleSolver) // easy puzzle
     info("Solving hard puzzles...")
-    solvePuzzlesWithActorsUsing("/top95.txt", puzzleSolver) // easy puzzle
+    usingActorsToSolve("/top95.txt", puzzleSolver) // tough puzzle
+
     puzzleSolver ! SolveNineSquareActor.Completed
     system.awaitTermination()
   }
 
-  private def solvePuzzlesWithActorsUsing(filename: String, puzzleSolver: ActorRef) = {
+  private def usingActorsToSolve(filename: String, puzzleSolver: ActorRef) = {
     for (line <- Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines()) {
-      println("Solving " + line)
       puzzleSolver ! SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList)
     }
     //    (durations.min, durations.max, (durations.sum / durations.size))
-  }
-
-      val localStart = System.currentTimeMillis()
-
-      val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
-      val duration = System.currentTimeMillis() - localStart
-
-      if (NineSquareUtil.isSheetOK(solution)) info("Solving... " + l + " took " + duration + "ms") else
-        fail("Failed to solve " + l)
-
-      duration
-
-    }}.toList
-    (durations.min, durations.max, (durations.sum / durations.size))
   }
 
   private def solvePuzzlesUsing(filename : String ) = {

@@ -1,6 +1,9 @@
 package org.teckhooi.ninesquare.util
 
 import akka.actor.{ActorSystem, Props, Actor}
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
 /**
  *
@@ -9,7 +12,6 @@ import akka.actor.{ActorSystem, Props, Actor}
  *
  */
 
-/*
 @RunWith(classOf[JUnitRunner])
 class SolverActorSuite extends FunSuite {
   test("hellow world! actor") {
@@ -17,17 +19,8 @@ class SolverActorSuite extends FunSuite {
     val greeter = mySystem.actorOf(Props[Greeter], "greeter")
     for (i <- 1 to 100) greeter ! Greeter.Solve(i)
     greeter ! Greeter.Total
-    mySystem.awaitTermination()
+    mySystem.awaitTermination() // needed in a test suite otherwise the the test will terminate abruptly
   }
-}
-*/
-
-object SolverActorSuite extends App {
-  val mySystem = ActorSystem("mySystem")
-  val greeter = mySystem.actorOf(Props[Greeter], "greeter")
-  for (i <- 1 to 1000) greeter ! Greeter.Solve(i)
-  greeter ! Greeter.Total
-  mySystem.awaitTermination()
 }
 
 
@@ -53,6 +46,10 @@ class Greeter extends Actor {
     case Greeter.Total =>
       println("Total : " + counter)
       context.system.shutdown()
+  }
+
+  override def postStop() = {
+    println("Stopping actor " + self)
   }
 }
 
