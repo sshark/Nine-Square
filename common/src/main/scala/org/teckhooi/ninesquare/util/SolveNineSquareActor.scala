@@ -2,7 +2,8 @@ package org.teckhooi.ninesquare.util
 
 import akka.actor.Actor
 import org.teckhooi.ninesquare.util.NineSquareUtil._
-import org.teckhooi.ninesquare.util.SolveNineSquareActor.{Solve, Completed}
+import org.teckhooi.ninesquare.util.SolveNineSquareActor.Solve
+import java.util.concurrent.CountDownLatch
 
 /**
  *
@@ -17,8 +18,7 @@ object SolveNineSquareActor {
   case class Completed()
 }
 
-class SolveNineSquareActor extends Actor {
-  var count = 1
+class SolveNineSquareActor(latch : CountDownLatch) extends Actor {
 
   def receive = {
     case Solve(l) =>
@@ -29,11 +29,10 @@ class SolveNineSquareActor extends Actor {
       val duration = System.currentTimeMillis() - localStart
 
       if (!NineSquareUtil.isSheetOK(solution)) throw new RuntimeException
-      println(l + " at line " + count + " solved.")
-      count = count + 1
 
-    case Completed =>
-      context.system.shutdown()
-      println("*** Total puzzles solved are " + count)
+  }
+
+  override def postStop() {
+    latch.countDown()
   }
 }

@@ -7,8 +7,12 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import scala.io.Source
 import org.slf4j.LoggerFactory
-import akka.actor.{ActorRef, Props, ActorSystem}
-import com.typesafe.config.ConfigFactory
+import akka.actor.{PoisonPill, ActorRef, Props, ActorSystem}
+import akka.util.Timeout
+import scala.concurrent.ExecutionContext
+import scala.concurrent.forkjoin.ForkJoinPool
+import scala.concurrent.duration._
+import java.util.concurrent.CountDownLatch
 
 /**
  * Copyright (C) March 21, 2013
@@ -126,22 +130,39 @@ class NineSquareUtilSuite extends FunSuite {
   }
 
   test("Solve puzzles simultaneously") {
-    val system = ActorSystem("mySystem", ConfigFactory.load().getConfig("MyDispatcherExample"))
-    val puzzleSolver = system.actorOf(Props[SolveNineSquareActor].withDispatcher("pinnedDispatcher"))
-    info("Solving easy puzzles...")
-    usingActorsToSolve("/easy.txt", puzzleSolver) // easy puzzle
-    info("Solving hard puzzles...")
-    usingActorsToSolve("/top95.txt", puzzleSolver) // tough puzzle
+    val system = ActorSystem("nineSquareSystem")
+    val numberOfSolvers = 4
+    val latch = new CountDownLatch(numberOfSolvers)
+    val puzzleSolvers = for (i <- 0 until numberOfSolvers)
+      yield system.actorOf(Props(new SolveNineSquareActor(latch)))
 
-    puzzleSolver ! SolveNineSquareActor.Completed
-    system.awaitTermination()
+    info("Solving easy puzzles...")
+    usingActorsToSolve("/easy.txt", puzzleSolvers) // easy puzzle
+    info("Solving hard puzzles...")
+    usingActorsToSolve("/top95.txt", puzzleSolvers) // tough puzzle
+
+    puzzleSolvers.foreach(_ ! PoisonPill)
+    latch.await()
+    system.shutdown()
   }
 
-  private def usingActorsToSolve(filename: String, puzzleSolver: ActorRef) = {
+  private def usingActorsToSolve(filename: String, puzzleSolvers: Seq[ActorRef]) = {
+    implicit val timeout = Timeout(5 seconds)
+    implicit val ec = ExecutionContext.fromExecutorService(new ForkJoinPool())
+
+    var i = 0
+    val numberOfSolvers = puzzleSolvers.size
+
     for (line <- Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines()) {
-      puzzleSolver ! SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList)
+      puzzleSolvers(i % numberOfSolvers) ! SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList)
+      i = i + 1
     }
+
     //    (durations.min, durations.max, (durations.sum / durations.size))
+  }
+
+  private def distributeLoad(puzzle : List[Int], solver : ActorRef) {
+//    solver ? SolveNineSquareActor.Solve(puzzle)
   }
 
   private def solvePuzzlesUsing(filename : String ) = {
