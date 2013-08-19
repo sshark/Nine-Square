@@ -7,12 +7,6 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import scala.io.Source
 import org.slf4j.LoggerFactory
-import akka.actor.{PoisonPill, ActorRef, Props, ActorSystem}
-import akka.util.Timeout
-import scala.concurrent.ExecutionContext
-import scala.concurrent.forkjoin.ForkJoinPool
-import scala.concurrent.duration._
-import java.util.concurrent.CountDownLatch
 
 /**
  * Copyright (C) March 21, 2013
@@ -126,44 +120,9 @@ class NineSquareUtilSuite extends FunSuite {
   private def logBasicStats(durations: (Long, Long, Long), puzzle: String) {
     val (min, max, avg) = durations
     logger.info("It took an average of " + avg + " ms to complete a single puzzle in " + puzzle +
-      ". The maximum and minimum times taken to complete a puzzle was " + max + "ms and " + min + "ms")
+      ". The maximum and minimum times taken to complete a puzzle were " + max + "ms and " + min + "ms")
   }
 
-  test("Solve puzzles simultaneously") {
-    val system = ActorSystem("nineSquareSystem")
-    val numberOfSolvers = 4
-    val latch = new CountDownLatch(numberOfSolvers)
-    val puzzleSolvers = for (i <- 0 until numberOfSolvers)
-      yield system.actorOf(Props(new SolveNineSquareActor(latch)))
-
-    info("Solving easy puzzles...")
-    usingActorsToSolve("/easy.txt", puzzleSolvers) // easy puzzle
-    info("Solving hard puzzles...")
-    usingActorsToSolve("/top95.txt", puzzleSolvers) // tough puzzle
-
-    puzzleSolvers.foreach(_ ! PoisonPill)
-    latch.await()
-    system.shutdown()
-  }
-
-  private def usingActorsToSolve(filename: String, puzzleSolvers: Seq[ActorRef]) = {
-    implicit val timeout = Timeout(5 seconds)
-    implicit val ec = ExecutionContext.fromExecutorService(new ForkJoinPool())
-
-    var i = 0
-    val numberOfSolvers = puzzleSolvers.size
-
-    for (line <- Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines()) {
-      puzzleSolvers(i % numberOfSolvers) ! SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList)
-      i = i + 1
-    }
-
-    //    (durations.min, durations.max, (durations.sum / durations.size))
-  }
-
-  private def distributeLoad(puzzle : List[Int], solver : ActorRef) {
-//    solver ? SolveNineSquareActor.Solve(puzzle)
-  }
 
   private def solvePuzzlesUsing(filename : String ) = {
     val durations = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line => {

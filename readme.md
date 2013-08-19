@@ -4,7 +4,7 @@ Nine Square is an interactive [Sudoku](http://en.wikipedia.org/wiki/Sudoku) puzz
 
 Rule
 -
-The game rules are exactly as Sudoku rules.
+Fill in the grid so that every row, every column and every 3x3 box contains the digits 1 through 9.
 
 Requirements
 -

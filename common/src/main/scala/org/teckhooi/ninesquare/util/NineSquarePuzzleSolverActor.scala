@@ -26,10 +26,10 @@ class SolveNineSquareActor(latch : CountDownLatch) extends Actor {
       val localStart = System.currentTimeMillis()
 
       val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
-      val duration = System.currentTimeMillis() - localStart
 
       if (!NineSquareUtil.isSheetOK(solution)) throw new RuntimeException
 
+      sender ! System.currentTimeMillis() - localStart
   }
 
   override def postStop() {

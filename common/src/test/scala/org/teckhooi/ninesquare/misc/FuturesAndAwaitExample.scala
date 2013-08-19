@@ -18,9 +18,10 @@ import scala.util.Random
 class ResponsiveActor extends Actor {
   def receive = {
     case x : Int =>
+      val start = System.currentTimeMillis()
       Thread.sleep(Random.nextInt(500))
       println(x)
-      sender ! "done"
+      sender ! System.currentTimeMillis() - start
   }
 
   override def postStop() {
@@ -37,8 +38,9 @@ object FuturesAndAwaitExample extends App {
   implicit val ec = ExecutionContext.fromExecutorService(new ForkJoinPool())
 
   val futures = (1 to 10 * numberOfActors) map {x => actors(x % 3) ? x}
-  Await.result(Future.sequence(futures), Duration.Inf)
-  println("Done")
+  val f = Future.sequence(futures)
+  val results = Await.result(f, Duration.Inf)
+  results.foreach {x => println(x + "ms")}
 
   actorSystem.shutdown
 }
