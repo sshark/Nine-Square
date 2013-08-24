@@ -59,7 +59,7 @@ class NineSquarePuzzleSolverActorSuite extends FunSuite {
     val i = cyclicSolversIndex(puzzleSolvers.length)
 
     val futures = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line =>
-      ask(puzzleSolvers(i.next), SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList))(50 seconds).mapTo[Long]
+      ask(puzzleSolvers(i.next), SolveNineSquareActor.Solve(line.replace('.', '0').map(_ - 0x30).toList))(5 seconds).mapTo[Long]
     }
 
     Await.result(Future.sequence(futures), Duration.Inf).toList
