@@ -69,6 +69,28 @@ class NineSquareUtilSuite extends FunSuite {
     "000000750" + "600000001" + "035000000" +
     "460903000" + "000024090" + "003600100"
 
+  val liveExample = List(
+    7, 9, 0, 0, 3, 8, 0, 0, 4,
+    0, 3, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 8, 0, 6, 0, 0, 7, 0,
+    0, 0, 6, 4, 0, 0, 0, 9, 0,
+    0, 0, 3, 0, 5, 0, 8, 0, 0,
+    0, 5, 0, 0, 0, 9, 7, 0, 0,
+    0, 6, 0, 0, 2, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 3, 0,
+    8, 0, 0, 3, 1, 0, 0, 2, 5)
+
+  val liveExampleSolution = List(
+    7, 9, 5, 1, 3, 8, 2, 6, 4,
+    6, 3, 1, 7, 4, 2, 9, 5, 8,
+    4, 2, 8, 9, 6, 5, 3, 7, 1,
+    1, 8, 6, 4, 7, 3, 5, 9, 2,
+    9, 7, 3, 2, 5, 1, 8, 4, 6,
+    2, 5, 4, 6, 8, 9, 7, 1, 3,
+    3, 6, 7, 5, 2, 4, 1, 8, 9,
+    5, 1, 2, 8, 9, 6, 4, 3, 7,
+    8, 4, 9, 3, 1, 7, 6, 2, 5)
+
   val solutionToVeryHardSheetInString = Vector(List(
     2, 4, 1, 8, 6, 5, 3, 7, 9,
     3, 5, 6, 4, 9, 7, 2, 1, 8,
@@ -115,6 +137,10 @@ class NineSquareUtilSuite extends FunSuite {
     logBasicStats(solvePuzzlesUsing("/easy.txt"), "/easy.txt") // easy puzzle
     info("Solving hard puzzles...")
     logBasicStats(solvePuzzlesUsing("/top95.txt"), "/top95.txt") // hardest puzzle
+  }
+
+  test("Solve a hard live example") {
+    assertEquals(liveExampleSolution, search(liveExample).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2})
   }
 
   private def logBasicStats(durations: (Long, Long, Long), puzzle: String) {
