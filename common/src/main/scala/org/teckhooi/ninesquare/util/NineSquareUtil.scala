@@ -88,7 +88,7 @@ object NineSquareUtil {
    * @param pos a position in a single dimension List for a 9x9 board.
    * @return the region where the given position in
    */
-  def bigCellIndexAt(pos : Int) = pos / 27 * 27 + pos / 3 % 3 * 3
+  def bigCellIndexAt(pos : Int) = pos / 27 * 3 + pos / 3 % 3
 
   // find all horizontal positions and convert them to a map of position and list of related positions excluding itself.
   private lazy val horizontal = (0 until 81 by 9).flatMap(x => (0 until 9) map (y => horizontalTranslation(x, y))).grouped(9).toSet

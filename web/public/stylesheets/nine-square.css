@@ -45,3 +45,22 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+.board {
+    border : 4px solid black;
+    color : white;
+    display : none;
+    width: 370px;
+    margin-top: 8px;
+}
+.board .cell {
+    padding : 8px;
+    margin : 4px;
+    display: inline-block;
+}
+.board .odd {
+    background : gray;
+}
+.board .even {
+    background : #222222;
+}

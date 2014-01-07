@@ -1,24 +1,24 @@
 @(message: String)
 
-    @main("9 Square") {
+@main("9 Square") {
 
-        <script src="@routes.Assets.at("javascripts/login.js")" ></script>
+    <script src="@routes.Assets.at("javascripts/login.js")" ></script>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div style="text-align:center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div style="text-align : center">
                     <img src="@routes.Assets.at("images/nine-square.png")" class="img-circle"/>
                     <h1>9 Square</h1>
                     <form class="form-signin" role="form">
                         <h3 class="form-signin-heading">Please sign in</h3>
                         <input type="text" class="form-control" placeholder="Email address" required autofocus />
                         <input type="password" class="form-control" placeholder="Password" required />
-@*
+                        @*
                         <label class="checkbox">
-                            <input type="checkbox" value="remember-me" /> Remember me
+                        <input type="checkbox" value="remember-me" /> Remember me
                         </label>
-*@
+                        *@
                         <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                         <a class="close-signin-btn btn btn-info btn-block" >Close</a>
                     </form>
@@ -26,8 +26,9 @@
                         <button class="open-form-btn btn btn-info">Sign in to my account</button>
                         <button class="play-single-game-btn btn btn-info">Play a single game</button>
                     </div>
-                    </div>
+                    <div class="board"></div>
                 </div>
             </div>
         </div>
-    }
+    </div>
+}
