@@ -1,3 +1,7 @@
+html {
+    overflow-y: scroll;
+}
+
 body {
     padding-top: 40px;
     padding-bottom: 40px;
@@ -10,8 +14,9 @@ body {
 
 .form-signin {
     padding: 0px;
-    margin: 0px ;
+    margin: 0px auto;
     display: none;
+    width: 370px;
 }
 .form-signin h3 {
     margin-top: 0;
@@ -46,21 +51,55 @@ body {
     border-top-right-radius: 0;
 }
 
-.board {
+.nine-square-panel {
+    display : none;
+    width: 440px;
+    margin: 0 auto;
+}
+
+.game-board {
     border : 4px solid black;
     color : white;
-    display : none;
-    width: 370px;
     margin-top: 8px;
+    display: inline-block;
 }
-.board .cell {
+.game-board .cell {
     padding : 8px;
     margin : 4px;
     display: inline-block;
+    width: 40px;
+    height: 40px;
 }
-.board .odd {
+.game-board .cell:hover {
+    background: white;
+}
+.game-board .cell.seed{
+    font-weight: bold;
+    color: yellow;
+}
+.game-board .cell.seed:hover{
+    font-weight: bold;
+    color: black;
+    background: yellow;
+}
+.game-board .odd {
     background : gray;
 }
-.board .even {
+.game-board .even {
     background : #222222;
+}
+.game-board .odd:hover {
+    color: gray;
+}
+.game-board .even:hover {
+    color: #222222;
+}
+
+.control-board {
+    margin: 4px auto;
+    padding: 4px;
+}
+
+.set-level-dialog .ui-dialog-titlebar-close {
+    visibility: hidden;
 }

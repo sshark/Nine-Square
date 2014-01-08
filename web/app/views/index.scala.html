@@ -2,17 +2,17 @@
 
 @main("9 Square") {
 
-    <script src="@routes.Assets.at("javascripts/login.js")" ></script>
+    <script src="@routes.Assets.at("javascripts/nine-square.js")" ></script>
 
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div style="text-align : center">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="welcome-panel">
                     <img src="@routes.Assets.at("images/nine-square.png")" class="img-circle"/>
                     <h1>9 Square</h1>
                     <form class="form-signin" role="form">
                         <h3 class="form-signin-heading">Please sign in</h3>
-                        <input type="text" class="form-control" placeholder="Email address" required autofocus />
+                        <input type="text" id="usernameText" class="form-control" placeholder="Email address" required />
                         <input type="password" class="form-control" placeholder="Password" required />
                         @*
                         <label class="checkbox">
@@ -20,15 +20,27 @@
                         </label>
                         *@
                         <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-                        <a class="close-signin-btn btn btn-info btn-block" >Close</a>
+                        <a class="close-signin-btn btn btn-default btn-block" >Close</a>
                     </form>
                     <div class="btn-panel">
-                        <button class="open-form-btn btn btn-info">Sign in to my account</button>
-                        <button class="play-single-game-btn btn btn-info">Play a single game</button>
+                        <button class="open-form-btn btn btn-primary">Sign in to my account</button>
+                        <button class="play-single-game-btn btn btn-default">Play a single game</button>
                     </div>
-                    <div class="board"></div>
+                </div>
+                <div class="nine-square-panel">
+                    <div class="game-board"></div>
+                    <div class="control-board">
+                        <button class="solve-btn btn btn-default">Solve</button>
+                        <button class="clear-puzzle-btn btn btn-default">Clear puzzle</button>
+                        <button class="new-game-btn btn btn-default">New game</button>
+                        <button class="main-screen-btn btn btn-primary">Return to main</button>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div id="set-level-dialog" title="Choose a level">
+            <button class="easy-level-btn btn btn-block btn-default">Easy</button>
+            <button class="hard-level-btn btn btn-block btn-default">Hard</button>
         </div>
     </div>
 }

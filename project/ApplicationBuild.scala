@@ -11,7 +11,7 @@ object ApplicationBuild extends Build {
 //  lazy val root = Project(id = "root", base = file(".")) aggregate(common, gui, cmdline)
   lazy val root = Project(id = "root", base = file(".")) aggregate(common, gui, web)
 
-  lazy val web = play.Project("web", path = file("web")) dependsOn(common)
+  lazy val web = play.Project("web", path = file("web")) dependsOn(common, gui)
 
   lazy val common = Project(id = "common",
     base = file("common"),
