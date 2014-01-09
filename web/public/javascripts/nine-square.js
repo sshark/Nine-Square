@@ -28,6 +28,13 @@ $(document).ready(function () {
         dialogClass: "set-level-dialog"
     });
 
+    $("#numpad-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        dialogClass: "numpad-dialog",
+        width : 154
+    });
+
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
             $("#set-level-dialog").dialog("open");
@@ -42,13 +49,69 @@ $(document).ready(function () {
         loadBoardFor("hard");
     });
 
-    $(".main-screen-btn").click(function () {
+    $(".check-puzzle-btn").click(function() {
+        $.ajax({
+            url: "check",
+            type: "POST",
+            contentType:"application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(buildListFrom($(".game-board"), false)),
+            success: function(data, status) {
+                if (data['result']) {
+                    alert("No conflict found.");
+                } else {
+                    alert("Conflicts!!!");
+                }
+            }
+        });
+    });
+
+    $(".solve-puzzle-btn").click(function() {
+        $.ajax({
+            url: "solve",
+            type: "POST",
+            contentType:"application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(buildListFrom($(".game-board"), true)),
+            success: function(data, status) {
+                $(".game-board").children().each(function(ndx) {
+                   $(this).text(data[ndx]);
+                });
+            }
+        });
+    });
+
+    $(".clear-puzzle-btn").click(function() {
+        $(".game-board").children().each(function() {
+            var self = $(this);
+            if (self.hasClass("empty")) {
+                self.html("&nbsp;");
+            };
+        });
+    });
+
+    $(".new-puzzle-btn").click(function() {
+        var board = $(".game-board");
+        board.empty();
+        addNewCellsTo(board);
+    });
+
+    $(".exit-to-main-btn").click(function () {
         $(".nine-square-panel").effect("explode", {}, 500, function () {
             $(".welcome-panel").show();
             $(".game-board").empty();
         });
     });
 });
+
+function buildListFrom(board, buildEmptyPuzzle) {
+    return board.children().map(function() {
+        return (!buildEmptyPuzzle || $(this).hasClass("seed")) ? guardedParseInt($(this).text()) : 0}).toArray();
+}
+
+function guardedParseInt(i) {
+    return '\xA0' == i ? 0 : parseInt(i);
+}
 
 function loadBoardFor(level) {
     $("#set-level-dialog").dialog("close");
@@ -65,15 +128,18 @@ function addNewCellsTo(board) {
         for (var i = 0; i < puzzle.length; i++) {
             var div = $("<div class='cell'>");
 
-            if (bigCellIndexAt(i) % 2 == 0) {
-                div.addClass("even");
-            } else {
-                div.addClass("odd");
-            }
+            div.attr("id", i);
 
             if (puzzle[i] != 0) {
                 div.addClass("seed");
+            } else {
+                div.addClass("empty");
+                div.click(function() {
+                    $("#numpad-dialog").dialog("open");
+                })
             }
+
+            div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
 
             div.html(spaceIfZero(puzzle[i]));
             self.append(div);
@@ -83,14 +149,6 @@ function addNewCellsTo(board) {
 
 function spaceIfZero(num) {
     return num == 0 ? "&nbsp;" : num;
-}
-
-function doubleDigit(i) {
-    if (i < 10) {
-        return "0" + i;
-    } else {
-        return "" + i;
-    }
 }
 
 function bigCellIndexAt(pos) {

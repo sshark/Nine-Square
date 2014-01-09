@@ -70,28 +70,36 @@ body {
     width: 40px;
     height: 40px;
 }
-.game-board .cell:hover {
-    background: white;
-}
 .game-board .cell.seed{
     font-weight: bold;
     color: yellow;
 }
-.game-board .cell.seed:hover{
-    font-weight: bold;
-    color: black;
-    background: yellow;
+/*
+.game-board div.seed.odd:hover {
+    background: gray;
+    color: yellow;
 }
+.game-board div.seed.even:hover {
+    background : #222222;
+    color: yellow;
+}
+*/
 .game-board .odd {
     background : gray;
+    border : 1px gray solid;
 }
 .game-board .even {
     background : #222222;
+    border : 1px #222222 solid;
 }
-.game-board .odd:hover {
+.game-board .empty.odd:hover {
+    background: white;
+    border : 1px black solid;
     color: gray;
 }
-.game-board .even:hover {
+.game-board .empty.even:hover {
+    background: white;
+    border : 1px black solid;
     color: #222222;
 }
 
@@ -100,6 +108,10 @@ body {
     padding: 4px;
 }
 
-.set-level-dialog .ui-dialog-titlebar-close {
+.set-level-dialog .ui-dialog-titlebar-close, .numpad-dialog .ui-dialog-titlebar-close {
     visibility: hidden;
+}
+
+#numpad-dialog button {
+    margin-bottom: 4px;
 }

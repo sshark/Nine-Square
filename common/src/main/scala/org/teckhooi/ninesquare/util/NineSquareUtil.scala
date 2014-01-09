@@ -196,6 +196,16 @@ object NineSquareUtil {
   }
 
   /**
+   * Solves the puzzle starting.
+   *
+   * @param puzzle solve puzzle
+   *
+   */
+  def solve(puzzle : List[Int]) = {
+    search(NineSquareUtil.toMapWithGuesses(puzzle)).toList.sortBy(_._1).flatMap(_._2)
+  }
+
+  /**
    * Solves the puzzle starting from given position i.e. pos
    *
    * This method of solving is deprecated because it is too slow to solve the puzzle.
@@ -203,8 +213,9 @@ object NineSquareUtil {
    * @param xs array to solve
    * @param pos pos to start
    * @return List of solutions if there are more than 1 solution
-   * @deprecated
+   *
    */
+  @deprecated
   def solve(xs : List[Int], pos: Int): Stream[List[Int]] = {
     if (!isConflictAt(xs.updated(pos, 0), pos, xs(pos))) {
       val pos = xs.indexOf(0)

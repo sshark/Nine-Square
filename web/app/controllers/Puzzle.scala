@@ -4,6 +4,8 @@ import play.api.mvc.{Action, Controller}
 import scala.io.Source
 import scala.util.Random
 import play.api.libs.json.Json
+import org.teckhooi.ninesquare.util.NineSquareUtil
+import play.Logger
 
 /**
  *
@@ -25,6 +27,16 @@ object Puzzle extends Controller{
     Ok(pickRandomPuzzleFrom('HARD))
   }
 
+  def checkPuzzle() = Action(parse.json) {request =>
+    Logger.debug("Partial puzzle received = " + request.body)
+    Ok(Json.toJson(Map("result" -> NineSquareUtil.isSheetOK(request.body.as[List[Int]]))))
+  }
+
+  def solvePuzzle = Action(parse.json) {request =>
+    Logger.debug("Puzzle received = " + request.body)
+    Ok(Json.toJson(NineSquareUtil.solve(request.body.as[List[Int]])))
+  }
+
   def pickRandomPuzzleFrom(level : Symbol) = {
     level match {
       case 'EASY => Json.toJson(randomlyPickAPuzzleFrom(easyPuzzles))
@@ -34,5 +46,4 @@ object Puzzle extends Controller{
 
   private def randomlyPickAPuzzleFrom(puzzles : List[String]) =
     puzzles(Random.nextInt(puzzles.size)).replace('.', '0').map(_ - 0x30)
-
 }
