@@ -1,21 +1,20 @@
 $(document).ready(function () {
     $(".open-form-btn").click(function () {
-        slideDown($(".form-signin"));
+        _slideDown($(".form-signin"));
         $(".form-signin .usernameText").focus();
     });
 
     $(".close-signin-btn").click(function () {
-        slideUp($(".form-signin"))
+        _slideUp($(".form-signin"))
     });
 
-    function slideDown(e) {
+    function _slideDown(e) {
         $(".btn-panel").hide();
-        $(".form-signin").slideDown('slow', function () {
-        });
+        e.slideDown('slow', function () {});
     }
 
-    function slideUp(e) {
-        $(".form-signin").slideUp('slow', function () {
+    function _slideUp(e) {
+        e.slideUp('slow', function () {
             $(".btn-panel").show();
         });
     }
@@ -28,7 +27,7 @@ $(document).ready(function () {
         dialogClass: "set-level-dialog"
     });
 
-    $("#numpad-dialog").dialog({
+    var numpadDialog = $("#numpad-dialog").dialog({
         autoOpen: false,
         modal: true,
         dialogClass: "numpad-dialog",
@@ -38,6 +37,15 @@ $(document).ready(function () {
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
             $("#set-level-dialog").dialog("open");
+        });
+    });
+
+    $(".form-play-single-game-btn").click(function () {
+        $(".form-signin").slideUp('slow', function() {
+            $(".btn-panel").show();
+            $(".welcome-panel").effect("puff", {}, 500, function () {
+                $("#set-level-dialog").dialog("open");
+            });
         });
     });
 
@@ -96,6 +104,18 @@ $(document).ready(function () {
         addNewCellsTo(board);
     });
 
+    $(".one-btn").click(numpadNumericFunGen(numpadDialog, "1"));
+    $(".two-btn").click(numpadNumericFunGen(numpadDialog, "2"));
+    $(".three-btn").click(numpadNumericFunGen(numpadDialog, "3"));
+    $(".four-btn").click(numpadNumericFunGen(numpadDialog, "4"));
+    $(".five-btn").click(numpadNumericFunGen(numpadDialog, "5"));
+    $(".six-btn").click(numpadNumericFunGen(numpadDialog, "6"));
+    $(".seven-btn").click(numpadNumericFunGen(numpadDialog, "7"));
+    $(".eight-btn").click(numpadNumericFunGen(numpadDialog, "8"));
+    $(".nine-btn").click(numpadNumericFunGen(numpadDialog, "9"));
+    $(".clear-btn").click(numpadNumericFunGen(numpadDialog, " "));
+    $(".close-btn").click(function() {numpadDialog.dialog("close")});
+
     $(".exit-to-main-btn").click(function () {
         $(".nine-square-panel").effect("explode", {}, 500, function () {
             $(".welcome-panel").show();
@@ -103,6 +123,14 @@ $(document).ready(function () {
         });
     });
 });
+
+function numpadNumericFunGen(numpadDialog, c) {
+    return function() {
+        var cell = $(".game-board").children("#" + numpadDialog.data("id"));
+        " " == c ? cell.html("&nbsp;") : cell.text(c);
+        numpadDialog.dialog("close");
+    }
+}
 
 function buildListFrom(board, buildEmptyPuzzle) {
     return board.children().map(function() {
@@ -135,7 +163,7 @@ function addNewCellsTo(board) {
             } else {
                 div.addClass("empty");
                 div.click(function() {
-                    $("#numpad-dialog").dialog("open");
+                    $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
                 })
             }
 

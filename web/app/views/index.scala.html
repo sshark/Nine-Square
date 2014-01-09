@@ -12,15 +12,19 @@
                     <h1>9 Square</h1>
                     <form class="form-signin" role="form">
                         <h3 class="form-signin-heading">Please sign in</h3>
-                        <input type="text" id="usernameText" class="form-control" placeholder="Email address" required />
-                        <input type="password" class="form-control" placeholder="Password" required />
+                        <input type="text" id="usernameText" class="form-control" placeholder="Email address" />
+                        <input type="password" class="form-control" placeholder="Password" />
                         @*
                         <label class="checkbox">
-                        <input type="checkbox" value="remember-me" /> Remember me
+                            <input type="checkbox" value="remember-me" /> Remember me
                         </label>
                         *@
                         <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-                        <a class="close-signin-btn btn btn-default btn-block" >Close</a>
+                        @*<a class="close-signin-btn btn btn-default btn-block" >Close</a>*@
+                        <a class="form-play-single-game-btn btn btn-default btn-block">Play a single game</a>
+                        <div class="text-left">
+                            <a href="/register-new-account">Register a new account</a>
+                        </div>
                     </form>
                     <div class="btn-panel">
                         <button class="open-form-btn btn btn-primary">Sign in to my account</button>
@@ -53,9 +57,9 @@
             <button class="seven-btn btn btn-default">7</button>
             <button class="eight-btn btn btn-default">8</button>
             <button class="nine-btn btn btn-default">9</button>
-            <button class="nine-btn btn btn-default">C</button>
-            <button class="clear-btn btn btn-default">&nbsp;</button>
-            <button class="clear-btn btn btn-default">X</button>
+            <button class="clear-btn btn btn-default">C</button>
+            <button class="empty-btn btn btn-default">&nbsp;</button>
+            <button class="close-btn btn btn-default">X</button>
         </div>
     </div>
 }
