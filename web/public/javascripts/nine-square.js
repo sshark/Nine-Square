@@ -2,7 +2,7 @@ $(document).ready(function () {
     // reverts $.fn.button to jqueryui btn and assigns bootstrap button functionality to $.fn
     $.fn.btn = $.fn.button.noConflict()
 
-    $("#about-btn").click(function() {
+    $("#about-btn").click(function () {
         _dialog("About 9 Square", "<h5><strong>How to play...</strong></h5><p>" +
             "Fill in the grid so that every row, every column and every 3x3 box contains the digits 1 through 9.<br/><br/></p>" +
             "<h5><strong>Copyright 2013 (c) Lim, Teck Hooi</strong></h5>" +
@@ -14,21 +14,22 @@ $(document).ready(function () {
             "distributed under the License is distributed on an \"AS IS\" BASIS," +
             "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
             "See the License for the specific language governing permissions and" +
-        "limitations under the License.</p>");
+            "limitations under the License.</p>");
     });
 
     $(".open-form-btn").click(function () {
         $(".btn-panel").hide();
-        $(".form-signin").slideDown('slow', function () {});
+        $(".form-signin").slideDown('slow', function () {
+        });
         $(".form-signin .usernameText").focus();
     });
 
-    $(".form-signin").submit(function(e) {
+    $(".form-signin").submit(function (e) {
         e.preventDefault();
         _dialog("Under development", "User sign in is not available yet.");
     });
 
-    $("#register-btn").click(function(e) {
+    $("#register-btn").click(function (e) {
         e.preventDefault();
         _dialog("Under development", "New registration is not open yet.");
     });
@@ -51,7 +52,7 @@ $(document).ready(function () {
         autoOpen: false,
         modal: true,
         dialogClass: "numpad-dialog",
-        width : 154
+        width: 154
     });
 
     $(".play-single-game-btn").click(function () {
@@ -61,7 +62,7 @@ $(document).ready(function () {
     });
 
     $(".form-play-single-game-btn").click(function () {
-        $(".form-signin").slideUp('slow', function() {
+        $(".form-signin").slideUp('slow', function () {
             $(".btn-panel").show();
             $(".welcome-panel").effect("puff", {}, 500, function () {
                 $("#set-level-dialog").dialog("open");
@@ -77,79 +78,90 @@ $(document).ready(function () {
         loadBoardFor("hard");
     });
 
-    $(".check-puzzle-btn").click(function() {
+    var $loading = $('#throbber').hide();
+    $(document).ajaxStart(function () {
+        $loading.show();
+    }).ajaxStop(function () {
+        $loading.hide();
+    });
+
+    $(".check-puzzle-btn").click(function () {
         $.ajax({
             url: "check",
             type: "POST",
-            contentType:"application/json; charset=utf-8",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
-            success: function(data, status) {
+            success: function (data, status) {
                 if (data['result']) {
                     _dialog("No conflict found.", "The numbers are placed according to the rules.");
                 } else {
                     _dialog("Conflicts!!!", "The numbers are in conflict with each other.");
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 _dialog(status, "Failed to check the puzzle because of " + error);
             }
         });
     });
 
-    $(".submit-puzzle-btn").click(function() {
+    $(".submit-puzzle-btn").click(function () {
         var puzzle = buildListFrom($(".game-board"));
-        if (!_.every(puzzle, function(num) {return num != 0})) {
+        if (!_.every(puzzle, function (num) {
+            return num != 0
+        })) {
             _dialog("Incomplete puzzle", "This puzzle is incomplete and will not be submitted.");
             return;
-        };
+        }
+        ;
         $.ajax({
             url: "submit",
             type: "POST",
-            contentType:"application/json; charset=utf-8",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
-            success: function(data, status) {
+            success: function (data, status) {
                 if (data['result']) {
                     _dialog("Congratulations", "This puzzle is submitted and added to your achievements.");
                 } else {
                     _dialog("Conflicts!!!", "This puzzle is rejected. The numbers in the puzzle conflict with the rule.");
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 _dialog(status, "Failed to submit the puzzle because of " + error);
             }
         });
     }).attr("disabled", true);
 
-    $(".solve-puzzle-btn").click(function() {
+    $(".solve-puzzle-btn").click(function () {
         $.ajax({
             url: "solve",
             type: "POST",
-            contentType:"application/json; charset=utf-8",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify(buildListFrom($(".game-board"), true)),
-            success: function(data, status) {
-                $(".game-board").children().each(function(ndx) {
-                   $(this).text(data[ndx]);
+            success: function (data, status) {
+                $(".game-board").children().each(function (ndx) {
+                    $(this).text(data[ndx]);
                 });
             },
-            error: function(jqXHR, status, error) {
+            error: function (jqXHR, status, error) {
                 _dialog(status, "Failed to load puzzle. An error has occurred in the server, " + error);
             }
         });
     });
 
-    $(".clear-puzzle-btn").click(function() {
-        $(".game-board").children().each(function() {
+    $(".clear-puzzle-btn").click(function () {
+        $(".game-board").children().each(function () {
             var self = $(this);
             if (self.hasClass("empty")) {
                 self.html("&nbsp;");
-            };
+            }
+            ;
         });
     });
 
-    $(".new-puzzle-btn").click(function() {
+    $(".new-puzzle-btn").click(function () {
         var board = $(".game-board");
         board.empty();
         addNewCellsTo(board);
@@ -165,7 +177,9 @@ $(document).ready(function () {
     $(".eight-btn").click(numpadNumericFunGen(numpadDialog, "8"));
     $(".nine-btn").click(numpadNumericFunGen(numpadDialog, "9"));
     $(".clear-btn").click(numpadNumericFunGen(numpadDialog, " "));
-    $(".close-btn").click(function() {numpadDialog.dialog("close")});
+    $(".close-btn").click(function () {
+        numpadDialog.dialog("close")
+    });
 
     $(".exit-to-main-btn").click(function () {
         $(".nine-square-panel").effect("explode", {}, 500, function () {
@@ -176,22 +190,22 @@ $(document).ready(function () {
 });
 
 function _dialog(title, message) {
-    $( "<div id=\"dialog-message\"></div>")
+    $("<div id=\"dialog-message\"></div>")
         .attr("title", title)
         .html(message)
         .dialog({
-        modal: true,
-        minWidth: 400,
-        buttons: {
-            Ok: function() {
-                $( this ).dialog( "close" );
+            modal: true,
+            minWidth: 400,
+            buttons: {
+                Ok: function () {
+                    $(this).dialog("close");
+                }
             }
-        }
-    });
+        });
 }
 
 function numpadNumericFunGen(numpadDialog, c) {
-    return function() {
+    return function () {
         var cell = $(".game-board").children("#" + numpadDialog.data("id"));
         " " == c ? cell.html("&nbsp;") : cell.text(c);
         numpadDialog.dialog("close");
@@ -199,8 +213,9 @@ function numpadNumericFunGen(numpadDialog, c) {
 }
 
 function buildListFrom(board, buildEmptyPuzzle) {
-    return board.children().map(function() {
-        return (!buildEmptyPuzzle || $(this).hasClass("seed")) ? guardedParseInt($(this).text()) : 0}).toArray();
+    return board.children().map(function () {
+        return (!buildEmptyPuzzle || $(this).hasClass("seed")) ? guardedParseInt($(this).text()) : 0
+    }).toArray();
 }
 
 function guardedParseInt(i) {
@@ -210,7 +225,8 @@ function guardedParseInt(i) {
 function loadBoardFor(level) {
     $("#set-level-dialog").dialog("close");
     addNewCellsTo($(".game-board"));
-    $(".nine-square-panel").effect("fade", {}, 1000, function () {});
+    $(".nine-square-panel").effect("fade", {}, 1000, function () {
+    });
 }
 
 function addNewCellsTo(board) {
@@ -218,27 +234,27 @@ function addNewCellsTo(board) {
         url: "/new-easy",
         context: board
     }).done(function (puzzle) {
-        var self = $(this);
-        for (var i = 0; i < puzzle.length; i++) {
-            var div = $("<div class='cell'>");
+            var self = $(this);
+            for (var i = 0; i < puzzle.length; i++) {
+                var div = $("<div class='cell'>");
 
-            div.attr("id", i);
+                div.attr("id", i);
 
-            if (puzzle[i] != 0) {
-                div.addClass("seed");
-            } else {
-                div.addClass("empty");
-                div.click(function() {
-                    $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
-                })
+                if (puzzle[i] != 0) {
+                    div.addClass("seed");
+                } else {
+                    div.addClass("empty");
+                    div.click(function () {
+                        $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
+                    })
+                }
+
+                div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
+
+                div.html(spaceIfZero(puzzle[i]));
+                self.append(div);
             }
-
-            div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
-
-            div.html(spaceIfZero(puzzle[i]));
-            self.append(div);
-        }
-    });
+        });
 }
 
 function spaceIfZero(num) {

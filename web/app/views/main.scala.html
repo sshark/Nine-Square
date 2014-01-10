@@ -24,8 +24,7 @@
                     <div class="header">
                         <ul class="nav nav-pills pull-right">
                             <li><a href="#" id="register-btn">New user</a></li>
-                            @*<li><a href="https://github.com/sshark/Nine-Square" target="_blank">Source</a></li>*@
-                            <li><a href="mailto:sshark@@gmail.com">Contact</a></li>
+                            <li><a href="mailto:sshark@@gmail.com?subject=9 Square Feedback" target="_blank">Contact</a></li>
                             <li><a href="#" id="about-btn">About</a></li>
                         </ul>
                         <h3 class="text-muted">9 Square</h3>
@@ -33,6 +32,11 @@
                 </div>
             </div>
             @content
+            <div id="throbber">
+                <div>
+                    <img src="@routes.Assets.at("images/ajax-loader.gif")"/>&nbsp;&nbsp;<strong><span>Loading... Please wait</span></strong>
+                </div>
+            </div>
         </div>
     </body>
 </html>

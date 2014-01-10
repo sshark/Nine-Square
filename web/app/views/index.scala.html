@@ -3,7 +3,7 @@
 @main("9 Square") {
     <script src="@routes.Assets.at("javascripts/nine-square.js")" ></script>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="col-md-6 col-md-offset-3">
             <div class="welcome-panel">
                 <a href="https://github.com/sshark/Nine-Square" target="_blank">
                     <img src="@routes.Assets.at("images/nine-square.png")" class="img-circle"/>
@@ -22,20 +22,20 @@
                     <a class="form-play-single-game-btn btn btn-default btn-block">Play a single game</a>
                 </form>
                 <div class="btn-panel">
-                    <button class="open-form-btn btn btn-primary">Sign in to my account</button>
-                    <button class="play-single-game-btn btn btn-default">Play a single game</button>
+                    <button class="open-form-btn btn btn-primary btn-block">Sign in to my account</button>
+                    <button class="play-single-game-btn btn btn-default btn-block">Play a single game</button>
                 </div>
             </div>
             <div class="nine-square-panel">
                 <div class="game-board"></div>
-                <div class="control-board">
-                    <button class="check-puzzle-btn btn btn-default" title="Check the puzzle for mistakes">Check</button>
-                    <button class="submit-puzzle-btn btn btn-default" title="Submit the puzzle">Submit</button>
-                    <button class="clear-puzzle-btn btn btn-default" title="Clear the puzzle">Clear</button>
-                    <button class="new-puzzle-btn btn btn-default" title="Create a new puzzle">New</button>
-                    <button class="solve-puzzle-btn btn btn-default" title="Solve the puzzle">Solve</button>
-                    <button class="exit-to-main-btn btn btn-primary">Exit to main</button>
-                </div>
+                <ul class="control-board nav nav-justified">
+                    <li><a href="#" class="check-puzzle-btn" title="Check the puzzle for mistakes">Check</a></li>
+                    <li><a href="#" class="submit-puzzle-btn" title="Submit the puzzle">Submit</a></li>
+                    <li><a href="#" class="clear-puzzle-btn" title="Clear the puzzle">Clear</a></li>
+                    <li><a href="#" class="new-puzzle-btn" title="Create a new puzzle">New</a></li>
+                    <li><a href="#" class="solve-puzzle-btn" title="Solve the puzzle">Solve</a></li>
+                    <li><a href="#" class="exit-to-main-btn" title="Exit to main page">Exit</a></li>
+                </ul>
             </div>
         </div>
     </div>
