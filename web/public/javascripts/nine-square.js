@@ -1,23 +1,43 @@
 $(document).ready(function () {
+    // reverts $.fn.button to jqueryui btn and assigns bootstrap button functionality to $.fn
+    $.fn.btn = $.fn.button.noConflict()
+
+    $("#about-btn").click(function() {
+        _dialog("About 9 Square", "<h5><strong>How to play...</strong></h5><p>" +
+            "Fill in the grid so that every row, every column and every 3x3 box contains the digits 1 through 9.<br/><br/></p>" +
+            "<h5><strong>Copyright 2013 (c) Lim, Teck Hooi</strong></h5>" +
+            "<p>Licensed under the Apache License, Version 2.0 (the \"License\");" +
+            "you may not use this file except in compliance with the License." +
+            "You may obtain a copy of the License at<br/><br/>" +
+            "    <a class=\"code\" target='_blank' href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a><br/><br/>" +
+            "Unless required by applicable law or agreed to in writing, software" +
+            "distributed under the License is distributed on an \"AS IS\" BASIS," +
+            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+            "See the License for the specific language governing permissions and" +
+        "limitations under the License.</p>");
+    });
+
     $(".open-form-btn").click(function () {
-        _slideDown($(".form-signin"));
+        $(".btn-panel").hide();
+        $(".form-signin").slideDown('slow', function () {});
         $(".form-signin .usernameText").focus();
     });
 
-    $(".close-signin-btn").click(function () {
-        _slideUp($(".form-signin"))
+    $(".form-signin").submit(function(e) {
+        e.preventDefault();
+        _dialog("Under development", "User sign in is not available yet.");
     });
 
-    function _slideDown(e) {
-        $(".btn-panel").hide();
-        e.slideDown('slow', function () {});
-    }
+    $("#register-btn").click(function(e) {
+        e.preventDefault();
+        _dialog("Under development", "New registration is not open yet.");
+    });
 
-    function _slideUp(e) {
-        e.slideUp('slow', function () {
+    $(".close-signin-btn").click(function () {
+        $(".form-signin").slideUp('slow', function () {
             $(".btn-panel").show();
         });
-    }
+    });
 
     $("#set-level-dialog").dialog({
         autoOpen: false,
@@ -66,13 +86,41 @@ $(document).ready(function () {
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
             success: function(data, status) {
                 if (data['result']) {
-                    alert("No conflict found.");
+                    _dialog("No conflict found.", "The numbers are placed according to the rules.");
                 } else {
-                    alert("Conflicts!!!");
+                    _dialog("Conflicts!!!", "The numbers are in conflict with each other.");
                 }
+            },
+            error: function(xhr, status, error) {
+                _dialog(status, "Failed to check the puzzle because of " + error);
             }
         });
     });
+
+    $(".submit-puzzle-btn").click(function() {
+        var puzzle = buildListFrom($(".game-board"));
+        if (!_.every(puzzle, function(num) {return num != 0})) {
+            _dialog("Incomplete puzzle", "This puzzle is incomplete and will not be submitted.");
+            return;
+        };
+        $.ajax({
+            url: "submit",
+            type: "POST",
+            contentType:"application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(buildListFrom($(".game-board"), false)),
+            success: function(data, status) {
+                if (data['result']) {
+                    _dialog("Congratulations", "This puzzle is submitted and added to your achievements.");
+                } else {
+                    _dialog("Conflicts!!!", "This puzzle is rejected. The numbers in the puzzle conflict with the rule.");
+                }
+            },
+            error: function(xhr, status, error) {
+                _dialog(status, "Failed to submit the puzzle because of " + error);
+            }
+        });
+    }).attr("disabled", true);
 
     $(".solve-puzzle-btn").click(function() {
         $.ajax({
@@ -85,6 +133,9 @@ $(document).ready(function () {
                 $(".game-board").children().each(function(ndx) {
                    $(this).text(data[ndx]);
                 });
+            },
+            error: function(jqXHR, status, error) {
+                _dialog(status, "Failed to load puzzle. An error has occurred in the server, " + error);
             }
         });
     });
@@ -123,6 +174,21 @@ $(document).ready(function () {
         });
     });
 });
+
+function _dialog(title, message) {
+    $( "<div id=\"dialog-message\"></div>")
+        .attr("title", title)
+        .html(message)
+        .dialog({
+        modal: true,
+        minWidth: 400,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+}
 
 function numpadNumericFunGen(numpadDialog, c) {
     return function() {

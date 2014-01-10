@@ -1,65 +1,60 @@
 @(message: String)
 
 @main("9 Square") {
-
     <script src="@routes.Assets.at("javascripts/nine-square.js")" ></script>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3 text-center">
-                <div class="welcome-panel">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <div class="welcome-panel">
+                <a href="https://github.com/sshark/Nine-Square" target="_blank">
                     <img src="@routes.Assets.at("images/nine-square.png")" class="img-circle"/>
-                    <h1>9 Square</h1>
-                    <form class="form-signin" role="form">
-                        <h3 class="form-signin-heading">Please sign in</h3>
-                        <input type="text" id="usernameText" class="form-control" placeholder="Email address" />
-                        <input type="password" class="form-control" placeholder="Password" />
-                        @*
-                        <label class="checkbox">
-                            <input type="checkbox" value="remember-me" /> Remember me
-                        </label>
-                        *@
-                        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-                        @*<a class="close-signin-btn btn btn-default btn-block" >Close</a>*@
-                        <a class="form-play-single-game-btn btn btn-default btn-block">Play a single game</a>
-                        <div class="text-left">
-                            <a href="/register-new-account">Register a new account</a>
-                        </div>
-                    </form>
-                    <div class="btn-panel">
-                        <button class="open-form-btn btn btn-primary">Sign in to my account</button>
-                        <button class="play-single-game-btn btn btn-default">Play a single game</button>
-                    </div>
+                </a>
+                <form class="form-signin" role="form" action="/">
+                    <h3 class="form-signin-heading">Please sign in</h3>
+                    <input type="text" id="usernameText" class="form-control" placeholder="Email address" />
+                    <input type="password" class="form-control" placeholder="Password" />
+                    @*
+                    <label class="checkbox">
+                    <input type="checkbox" value="remember-me" /> Remember me
+                    </label>
+                    *@
+                    <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                    @*<a class="close-signin-btn btn btn-default btn-block" >Close</a>*@
+                    <a class="form-play-single-game-btn btn btn-default btn-block">Play a single game</a>
+                </form>
+                <div class="btn-panel">
+                    <button class="open-form-btn btn btn-primary">Sign in to my account</button>
+                    <button class="play-single-game-btn btn btn-default">Play a single game</button>
                 </div>
-                <div class="nine-square-panel">
-                    <div class="game-board"></div>
-                    <div class="control-board">
-                        <button class="check-puzzle-btn btn btn-default">Check</button>
-                        <button class="clear-puzzle-btn btn btn-default">Clear</button>
-                        <button class="new-puzzle-btn btn btn-default">New</button>
-                        <button class="solve-puzzle-btn btn btn-default">Solve</button>
-                        <button class="exit-to-main-btn btn btn-primary">Exit to main</button>
-                    </div>
+            </div>
+            <div class="nine-square-panel">
+                <div class="game-board"></div>
+                <div class="control-board">
+                    <button class="check-puzzle-btn btn btn-default" title="Check the puzzle for mistakes">Check</button>
+                    <button class="submit-puzzle-btn btn btn-default" title="Submit the puzzle">Submit</button>
+                    <button class="clear-puzzle-btn btn btn-default" title="Clear the puzzle">Clear</button>
+                    <button class="new-puzzle-btn btn btn-default" title="Create a new puzzle">New</button>
+                    <button class="solve-puzzle-btn btn btn-default" title="Solve the puzzle">Solve</button>
+                    <button class="exit-to-main-btn btn btn-primary">Exit to main</button>
                 </div>
             </div>
         </div>
-        <div id="set-level-dialog" title="Choose a level">
-            <button class="easy-level-btn btn btn-block btn-default">Easy</button>
-            <button class="hard-level-btn btn btn-block btn-default">Hard</button>
-        </div>
-        <div id="numpad-dialog" title="Pick a number">
-            <button class="one-btn btn btn-default">1</button>
-            <button class="two-btn btn btn-default">2</button>
-            <button class="three-btn btn btn-default">3</button>
-            <button class="four-btn btn btn-default">4</button>
-            <button class="five-btn btn btn-default">5</button>
-            <button class="six-btn btn btn-default">6</button>
-            <button class="seven-btn btn btn-default">7</button>
-            <button class="eight-btn btn btn-default">8</button>
-            <button class="nine-btn btn btn-default">9</button>
-            <button class="clear-btn btn btn-default">C</button>
-            <button class="empty-btn btn btn-default">&nbsp;</button>
-            <button class="close-btn btn btn-default">X</button>
-        </div>
+    </div>
+    <div id="set-level-dialog" title="Choose a level">
+        <button class="easy-level-btn btn btn-block btn-default">Easy</button>
+        <button class="hard-level-btn btn btn-block btn-default">Hard</button>
+    </div>
+    <div id="numpad-dialog" title="Pick a number">
+        <button class="one-btn btn btn-default">1</button>
+        <button class="two-btn btn btn-default">2</button>
+        <button class="three-btn btn btn-default">3</button>
+        <button class="four-btn btn btn-default">4</button>
+        <button class="five-btn btn btn-default">5</button>
+        <button class="six-btn btn btn-default">6</button>
+        <button class="seven-btn btn btn-default">7</button>
+        <button class="eight-btn btn btn-default">8</button>
+        <button class="nine-btn btn btn-default">9</button>
+        <button class="clear-btn btn btn-default">C</button>
+        <button class="empty-btn btn btn-default">&nbsp;</button>
+        <button class="close-btn btn btn-default">X</button>
     </div>
 }

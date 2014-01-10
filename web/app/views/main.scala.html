@@ -14,10 +14,25 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
-        @*<script src="@routes.Assets.at("javascripts/underscore-1.5.2.min.js")" type="text/javascript"></script>*@
+        <script src="@routes.Assets.at("javascripts/underscore-1.5.2.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
     </head>
     <body>
-        @content
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="header">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="#" id="register-btn">New user</a></li>
+                            @*<li><a href="https://github.com/sshark/Nine-Square" target="_blank">Source</a></li>*@
+                            <li><a href="mailto:sshark@@gmail.com">Contact</a></li>
+                            <li><a href="#" id="about-btn">About</a></li>
+                        </ul>
+                        <h3 class="text-muted">9 Square</h3>
+                    </div>
+                </div>
+            </div>
+            @content
+        </div>
     </body>
 </html>

@@ -5,7 +5,10 @@ html {
 body {
     padding-top: 40px;
     padding-bottom: 40px;
-    background-color: #eee;
+}
+
+a:active {
+    background: transparent;
 }
 
 .btn-panel {
@@ -17,9 +20,6 @@ body {
     margin: 0px auto;
     display: none;
     width: 370px;
-}
-.form-signin h3 {
-    margin-top: 0;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
@@ -103,6 +103,14 @@ body {
     color: #222222;
 }
 
+.row {
+    margin-bottom: 10px;
+}
+
+.welcome-panel .btn-panel {
+    margin-top: 16px;
+}
+
 .control-board {
     margin: 4px auto;
     padding: 4px;
@@ -114,4 +122,14 @@ body {
 
 #numpad-dialog button {
     margin-bottom: 4px;
+}
+
+.header {
+    border-bottom: 1px solid #e5e5e5;
+}
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 8px;
 }
