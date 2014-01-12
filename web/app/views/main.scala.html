@@ -22,10 +22,13 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="header">
-                        <ul class="nav nav-pills pull-right">
+                        <ul class="main-menu nav nav-pills pull-right">
                             <li><a href="#" id="register-btn">New user</a></li>
                             <li><a href="mailto:sshark@@gmail.com?subject=9 Square Feedback" target="_blank">Contact</a></li>
                             <li><a href="#" id="about-btn">About</a></li>
+                        </ul>
+                        <ul class="game-menu nav nav-pills pull-right">
+                            <li><a href="#" class="exit-to-main-btn" title="Exit to main page">Exit</a></li>
                         </ul>
                         <h3 class="text-muted">9 Square</h3>
                     </div>
@@ -33,10 +36,12 @@
             </div>
             @content
             <div id="throbber">
-                <div>
+                <div id="throbber-cover"></div>
+                <div id="throbber-message">
                     <img src="@routes.Assets.at("images/ajax-loader.gif")"/>&nbsp;&nbsp;<strong><span>Loading... Please wait</span></strong>
                 </div>
             </div>
+
         </div>
     </body>
 </html>

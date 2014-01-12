@@ -20,13 +20,16 @@ body {
     margin: 0px auto;
     display: none;
 }
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
     margin-bottom: 10px;
 }
+
 .form-signin .checkbox {
     font-weight: normal;
 }
+
 .form-signin .form-control {
     position: relative;
     font-size: 16px;
@@ -36,14 +39,17 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
 .form-signin .form-control:focus {
     z-index: 2;
 }
+
 .form-signin input[type="text"] {
     margin-bottom: -1px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+
 .form-signin input[type="password"] {
     margin-bottom: 10px;
     border-top-left-radius: 0;
@@ -51,46 +57,51 @@ body {
 }
 
 .nine-square-panel {
-    display : none;
+    display: none;
     margin: 0 auto;
 }
 
 .game-board {
-    border : 4px solid black;
-    color : white;
+    border: 4px solid black;
+    color: white;
     display: inline-block;
     padding: 3px;
     border-radius: 5px;
 }
+
 .game-board .cell {
-    padding : 10px 20px;
+    padding: 10px 20px;
     font-size: 22px;
-    margin : 4px;
+    margin: 4px;
     display: inline-block;
     width: 52px;
     height: 52px;
 }
-.game-board .cell.seed{
+
+.game-board .cell.seed {
     font-weight: bold;
     color: yellow;
 }
 
 .game-board .odd {
-    background : gray;
-    border : 1px gray solid;
+    background: gray;
+    border: 1px gray solid;
 }
+
 .game-board .even {
-    background : #222222;
-    border : 1px #222222 solid;
+    background: #222222;
+    border: 1px #222222 solid;
 }
+
 .game-board .empty.odd:hover {
     background: white;
-    border : 1px black solid;
+    border: 1px black solid;
     color: gray;
 }
+
 .game-board .empty.even:hover {
     background: white;
-    border : 1px black solid;
+    border: 1px black solid;
     color: #222222;
 }
 
@@ -103,10 +114,14 @@ body {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+.nav-justified a:hover {
+    background-color: #ddd;
+    background-image: none;
+    box-shadow: inset 0 3px 7px rgba(0,0,0,.15);
+}
 
 .control-board {
     margin: 4px auto;
-    padding: 4px;
 }
 
 .set-level-dialog .ui-dialog-titlebar-close, .numpad-dialog .ui-dialog-titlebar-close {
@@ -120,27 +135,42 @@ body {
 .header {
     border-bottom: 1px solid #e5e5e5;
 }
+
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
     line-height: 40px;
     padding-bottom: 8px;
 }
+.header .game-menu {
+    display: none;
+}
 
 #throbber {
-    opacity:    0.5;
-    background: #000;
-    width:      100%;
-    height:     100%;
-    z-index:    10;
-    top:        0;
-    left:       0;
-    position:   fixed;
+    width: 100%;
+    height: 100%;
 }
-#throbber div {
-    opacity: 1.0;
+#throbber-cover {
+    /*background: rgb(0, 0, 0);*/
+    background-image: url('/assets/images/ui-bg_diagonals-thick_40x40.png');
+    background-repeat: repeat-x repeat-y;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+#throbber-message {
     color: black;
-    margin: 20% 44%;
-    background: white;
-    padding: 4px;
+    background: #ffffff;
+    margin: auto;
+    position: absolute;
+    width: 206px;
+    height: 44px;
+    padding: 8px;
+    z-index:20;
+    top: 322px;
+    left: 700px;
 }

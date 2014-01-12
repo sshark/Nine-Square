@@ -33,8 +33,15 @@ object Puzzle extends Controller{
   }
 
   def solvePuzzle = Action(parse.json) {request =>
+    // TODO possiblely mark puzzle as tainted if user do not the solve puzzle on his own accord
     Logger.debug("Puzzle received = " + request.body)
     Ok(Json.toJson(NineSquareUtil.solve(request.body.as[List[Int]])))
+  }
+
+  def submitPuzzle = Action(parse.json) {request =>
+    // TODO verify user has logged on otherwise this method is unauthorized. Record puzzle as solved in the user account
+    Logger.debug("Puzzle received = " + request.body)
+    Ok(Json.toJson(Map("result" -> NineSquareUtil.isSheetOK(request.body.as[List[Int]]))));
   }
 
   def pickRandomPuzzleFrom(level : Symbol) = {

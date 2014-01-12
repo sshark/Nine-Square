@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     $("#register-btn").click(function (e) {
         e.preventDefault();
-        _dialog("Under development", "New registration is not open yet.");
+        _dialog("Under development", "This game is not open for new registration yet.");
     });
 
     $(".close-signin-btn").click(function () {
@@ -45,7 +45,8 @@ $(document).ready(function () {
         modal: true,
         closeOnEscape: false,
         draggable: false,
-        dialogClass: "set-level-dialog"
+        dialogClass: "set-level-dialog",
+        close: function() {$(".game-menu").toggle();}
     });
 
     var numpadDialog = $("#numpad-dialog").dialog({
@@ -57,7 +58,7 @@ $(document).ready(function () {
 
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
-            $("#set-level-dialog").dialog("open");
+            switchToGameBoard();
         });
     });
 
@@ -65,7 +66,7 @@ $(document).ready(function () {
         $(".form-signin").slideUp('slow', function () {
             $(".btn-panel").show();
             $(".welcome-panel").effect("puff", {}, 500, function () {
-                $("#set-level-dialog").dialog("open");
+                switchToGameBoard();
             });
         });
     });
@@ -94,9 +95,9 @@ $(document).ready(function () {
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
             success: function (data, status) {
                 if (data['result']) {
-                    _dialog("No conflict found.", "The numbers are placed according to the rules.");
+                    _dialog("No conflict found.", "The numbers are in their correct positions.");
                 } else {
-                    _dialog("Conflicts!!!", "The numbers are in conflict with each other.");
+                    _dialog("Conflicts!!!", "There are conflicting numbers in the puzzle.");
                 }
             },
             error: function (xhr, status, error) {
@@ -122,16 +123,17 @@ $(document).ready(function () {
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
             success: function (data, status) {
                 if (data['result']) {
-                    _dialog("Congratulations", "This puzzle is submitted and added to your achievements.");
+                    _dialog("Congratulations!!!", "This puzzle is solved and added to your achievements.");
+                    $(".exit-to-main-btn").click()
                 } else {
-                    _dialog("Conflicts!!!", "This puzzle is rejected. The numbers in the puzzle conflict with the rule.");
+                    _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
                 }
             },
             error: function (xhr, status, error) {
                 _dialog(status, "Failed to submit the puzzle because of " + error);
             }
         });
-    }).attr("disabled", true);
+    });
 
     $(".solve-puzzle-btn").click(function () {
         $.ajax({
@@ -183,8 +185,10 @@ $(document).ready(function () {
 
     $(".exit-to-main-btn").click(function () {
         $(".nine-square-panel").effect("explode", {}, 500, function () {
-            $(".welcome-panel").show();
             $(".game-board").empty();
+            $(".welcome-panel").show();
+            $(".game-menu").toggle();
+            $(".main-menu").toggle();
         });
     });
 });
@@ -202,6 +206,11 @@ function _dialog(title, message) {
                 }
             }
         });
+}
+
+function switchToGameBoard() {
+    $(".main-menu").toggle();
+    $("#set-level-dialog").dialog("open");
 }
 
 function numpadNumericFunGen(numpadDialog, c) {

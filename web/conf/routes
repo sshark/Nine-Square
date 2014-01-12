@@ -7,6 +7,7 @@ GET         /                    controllers.Application.index
 GET         /new-easy            controllers.Puzzle.newEasyPuzzle
 GET         /new-hard            controllers.Puzzle.newHardPuzzle
 POST        /solve               controllers.Puzzle.solvePuzzle
+POST        /submit               controllers.Puzzle.submitPuzzle
 POST        /check               controllers.Puzzle.checkPuzzle
 
 # Map static resources from the /public folder to the /assets URL path
