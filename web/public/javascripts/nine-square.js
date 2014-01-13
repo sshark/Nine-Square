@@ -123,7 +123,7 @@ $(document).ready(function () {
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
             success: function (data, status) {
                 if (data['result']) {
-                    _dialog("Congratulations!!!", "This puzzle is solved and added to your achievements.");
+                    _dialog("Congratulations!!!", "You have solved this puzzle. Your achievements will be recorded if you have logged on.");
                     $(".exit-to-main-btn").click()
                 } else {
                     _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
