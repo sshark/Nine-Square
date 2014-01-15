@@ -1,6 +1,5 @@
 package org.teckhooi.ninesquare.misc
 
-import org.teckhooi.ninesquare.util.NineSquareUtil
 
 object ScratchPad extends App {
   type Estimates = Map[Int, List[Int]]

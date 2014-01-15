@@ -166,8 +166,10 @@ body {
     color: black;
     background: #ffffff;
     position: absolute;
-    padding: 8px;
+    padding: 4px;
     z-index:20;
     top: 50%;
     left: 40%;
+    border: 4px white solid;
+    border-radius: 5px;
 }

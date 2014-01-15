@@ -35,6 +35,7 @@ object ApplicationBuild extends Build {
 //      val slf4s = "com.weiglewilczek.slf4s" % "slf4s_2.9.1" % "1.0.7"
       val scalaSwing = "org.scala-lang" % "scala-swing" % "2.10.1"
       val akka = "com.typesafe.akka" %% "akka-actor" % "2.2.0"
+      val mysql = "mysql" % "mysql-connector-java" % "5.1.28"
 
       object Test {
         val scalaTest = "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
@@ -45,11 +46,10 @@ object ApplicationBuild extends Build {
     import Compile._
 
     val testkit = Seq(Test.scalaTest, Test.junit)
-//    val logback = Seq(slf4jApi, logback)
     val logging = Seq(logback)
 
-    val common = logging ++ testkit ++ Seq(akka) // ++ Seq(scalaz)
-    val gui = logging ++ testkit ++ Seq(scalaSwing) // ++ Seq(scalaz)
-    val cmdline = logging ++ testkit  // ++ Seq(scalaz)
+    val common = logging ++ testkit ++ Seq(akka, mysql, play.Project.jdbc, play.Project.anorm)
+    val gui = logging ++ testkit ++ Seq(scalaSwing)
+    val cmdline = logging ++ testkit
   }
 }

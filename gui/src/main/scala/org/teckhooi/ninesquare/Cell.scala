@@ -1,8 +1,8 @@
-package org.teckhooi.ninesquare
+package org.teckhooi.ninesquare.gui
 
 import java.awt.{Font, Color, Dimension}
 import swing.Button
-import util.NineSquareUtil
+import org.teckhooi.ninesquare.util.NineSquareUtil
 
 /**
  *

@@ -1,4 +1,4 @@
-package org.teckhooi.ninesquare
+package org.teckhooi.ninesquare.gui
 
 import swing._
 import event.ButtonClicked

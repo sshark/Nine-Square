@@ -1,6 +1,5 @@
-package org.teckhooi.ninesquare
+package org.teckhooi.ninesquare.gui
 
-import util.NineSquareUtil
 import swing._
 import scala.swing.event.{Key, ButtonClicked}
 import javax.swing.border.EmptyBorder
@@ -12,6 +11,7 @@ import java.awt.Color
 import scala.io.Source
 import scala.util.Random
 import org.slf4j.LoggerFactory
+import org.teckhooi.ninesquare.util.NineSquareUtil
 
 /**
  *

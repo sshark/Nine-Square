@@ -1,6 +1,6 @@
 package org.teckhooi.ninesquare.util
 
-import org.teckhooi.ninesquare.util.NineSquareUtil._
+import NineSquareUtil._
 import org.junit.Assert._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

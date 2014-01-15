@@ -1,9 +1,8 @@
 package org.teckhooi.ninesquare.util
 
 import akka.actor.Actor
-import org.teckhooi.ninesquare.util.NineSquareUtil._
-import org.teckhooi.ninesquare.util.SolveNineSquareActor.Solve
 import java.util.concurrent.CountDownLatch
+import org.teckhooi.ninesquare.util.SolveNineSquareActor.Solve
 
 /**
  *
@@ -25,7 +24,7 @@ class SolveNineSquareActor(latch : CountDownLatch) extends Actor {
 
       val localStart = System.currentTimeMillis()
 
-      val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
+      val solution = NineSquareUtil.search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
 
       if (!NineSquareUtil.isSheetOK(solution)) throw new RuntimeException
 

@@ -1,6 +1,5 @@
 package org.teckhooi.ninesquare.util
 
-
 /**
  * Copyright (C) March 21, 2013
  *

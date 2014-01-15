@@ -3,12 +3,21 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Application.index
-GET         /new-easy            controllers.Puzzle.newEasyPuzzle
-GET         /new-hard            controllers.Puzzle.newHardPuzzle
-POST        /solve               controllers.Puzzle.solvePuzzle
-POST        /submit               controllers.Puzzle.submitPuzzle
-POST        /check               controllers.Puzzle.checkPuzzle
+GET           /                    org.teckhooi.ninesquare.controllers.Application.index
+
+# Puzzle
+GET           /new-easy            org.teckhooi.ninesquare.controllers.PuzzleController.newEasyPuzzle
+GET           /new-hard            org.teckhooi.ninesquare.controllers.PuzzleController.newHardPuzzle
+POST          /solve               org.teckhooi.ninesquare.controllers.PuzzleController.solvePuzzle
+POST          /submit              org.teckhooi.ninesquare.controllers.PuzzleController.submitPuzzle
+POST          /check               org.teckhooi.ninesquare.controllers.PuzzleController.checkPuzzle
+
+# User
+POST          /newuser             org.teckhooi.ninesquare.controllers.UserController.newUser
+#PUT           /updateuser          org.teckhooi.ninesquare.controllers.UserController.updateUser
+DELETE        /removeuser/:oid          org.teckhooi.ninesquare.controllers.UserController.removeUser(oid:Long)
+DELETE        /clear               org.teckhooi.ninesquare.controllers.UserController.clearUsers
+GET           /users               org.teckhooi.ninesquare.controllers.UserController.list
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET           /assets/*file        controllers.Assets.at(path="/public", file)
