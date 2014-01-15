@@ -30,8 +30,7 @@ $(document).ready(function () {
     });
 
     $("#register-btn").click(function (e) {
-        e.preventDefault();
-        _dialog("Under development", "This game is not open for new registration yet.");
+        $("#register-new-user-dialog").dialog("open");
     });
 
     $(".close-signin-btn").click(function () {
@@ -55,6 +54,18 @@ $(document).ready(function () {
         dialogClass: "numpad-dialog",
         width: 154
     });
+
+    $("#register-new-user-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        closeOnEscape: false,
+        draggable: false,
+        dialogClass: "register-new-user-dialog"
+    });
+
+    $("#register-new-user-dialog .cancel-btn").click(function() {
+        $("#register-new-user-dialog").dialog("close");
+    })
 
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
