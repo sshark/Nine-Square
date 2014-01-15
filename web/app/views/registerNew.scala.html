@@ -1,0 +1,16 @@
+@main("9 Square") {
+    <script src="@routes.Assets.at("javascripts/nine-square.register-new.js")" ></script>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div id="register-new-user" title="New user">
+                <form class="form-register" role="form" action="/register">
+                    <input type="text" class="emailText form-control" placeholder="Email address" />
+                    <input type="password" class="passwordText form-control" placeholder="Password" />
+                    <input type="password" class="reenter-passwordText form-control" placeholder="Re-enter Password" />
+                    <input type="text" class="nameText form-control" placeholder="Name" />
+                    <button class="register-me-btn btn btn-primary btn-primary btn-block" type="submit">Register me</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
