@@ -52,4 +52,8 @@ object UserController extends Controller {
     AnormUserDAO.clear
     Ok(Json.toJson(Map("deleted" -> "{oid : -1 }")))
   }
+
+  def registerNew = Action {
+    Ok(views.html.registerNew())
+  }
 }

@@ -30,7 +30,10 @@ $(document).ready(function () {
     });
 
     $("#register-btn").click(function (e) {
-        $("#register-new-user-dialog").dialog("open");
+        $(".container").slideUp('slow', function() {
+            throbber.show();
+            window.location='register-new'
+        });
     });
 
     $(".close-signin-btn").click(function () {
@@ -90,16 +93,16 @@ $(document).ready(function () {
         loadBoardFor("hard");
     });
 
-    var $loading = $('#throbber').hide();
+    var throbber = $('#throbber');
     $(document).ajaxStart(function () {
-        $loading.show();
+        throbber.show();
     }).ajaxStop(function () {
-        $loading.hide();
+        throbber.hide();
     });
 
     $(".check-puzzle-btn").click(function () {
         $.ajax({
-            url: "check",
+            url: "/api/check-puzzle",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -127,7 +130,7 @@ $(document).ready(function () {
         }
         ;
         $.ajax({
-            url: "submit",
+            url: "/api/submit-puzzle",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -148,7 +151,7 @@ $(document).ready(function () {
 
     $(".solve-puzzle-btn").click(function () {
         $.ajax({
-            url: "solve",
+            url: "/api/solve-puzzle",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -251,7 +254,7 @@ function loadBoardFor(level) {
 
 function addNewCellsTo(board) {
     $.ajax({
-        url: "/new-easy",
+        url: "/api/new-easy-puzzle",
         context: board
     }).done(function (puzzle) {
             var self = $(this);
