@@ -3,22 +3,23 @@
 # ~~~~
 
 # Home page
-GET           /                            org.teckhooi.ninesquare.controllers.Application.index
-GET           /register-new                org.teckhooi.ninesquare.controllers.UserController.registerNew
+GET           /                            controllers.Application.index
+GET           /new-user                    controllers.Users.newUser
+POST          /new-user                    controllers.Users.saveUser
 
 # Puzzle
-GET           /api/new-easy-puzzle         org.teckhooi.ninesquare.controllers.PuzzleController.newEasyPuzzle
-GET           /api/new-hard-puzzle         org.teckhooi.ninesquare.controllers.PuzzleController.newHardPuzzle
-POST          /api/solve-puzzle            org.teckhooi.ninesquare.controllers.PuzzleController.solvePuzzle
-POST          /api/submit-puzzle           org.teckhooi.ninesquare.controllers.PuzzleController.submitPuzzle
-POST          /api/check-puzzle            org.teckhooi.ninesquare.controllers.PuzzleController.checkPuzzle
+GET           /api/new-easy-puzzle         controllers.Puzzles.newEasyPuzzle
+GET           /api/new-hard-puzzle         controllers.Puzzles.newHardPuzzle
+POST          /api/solve-puzzle            controllers.Puzzles.solvePuzzle
+POST          /api/submit-puzzle           controllers.Puzzles.submitPuzzle
+POST          /api/check-puzzle            controllers.Puzzles.checkPuzzle
 
 # User
-POST          /api/new-user                org.teckhooi.ninesquare.controllers.UserController.newUser
-#PUT           /api/update-user          org.teckhooi.ninesquare.controllers.UserController.updateUser
-DELETE        /api/remove-user/:oid        org.teckhooi.ninesquare.controllers.UserController.removeUser(oid:Long)
-DELETE        /api/clear-users             org.teckhooi.ninesquare.controllers.UserController.clearUsers
-GET           /api/users                   org.teckhooi.ninesquare.controllers.UserController.list
+#POST          /api/new-user                controllers.Users.newUser
+#PUT           /api/update-user          controllers.Users.updateUser
+DELETE        /api/remove-user/:oid        controllers.Users.removeUser(oid:Long)
+DELETE        /api/clear-users             controllers.Users.clearUsers
+GET           /api/users                   controllers.Users.list
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                controllers.Assets.at(path="/public", file)

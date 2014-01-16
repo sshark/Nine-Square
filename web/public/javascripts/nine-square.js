@@ -29,10 +29,10 @@ $(document).ready(function () {
         _dialog("Under development", "User sign in is not available yet.");
     });
 
-    $("#register-btn").click(function (e) {
+    $("#new-user-btn").click(function (e) {
         $(".container").slideUp('slow', function() {
             throbber.show();
-            window.location='register-new'
+            window.location='new-user'
         });
     });
 

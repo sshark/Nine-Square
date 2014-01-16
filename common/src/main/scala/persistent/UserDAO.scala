@@ -9,7 +9,8 @@ import java.util.Date
  *
  */
 
-case class User(email : String, password : String, name : String, active : Boolean, dateCreated : Date, oid: Long = 0)
+case class User(email : String, password : String, verifyPassword : String, name : String,
+                active : Option[Boolean], dateCreated : Option[Date], oid: Option[Long] = Some(0))
 
 trait UserDAO {
   def insert(user : User)

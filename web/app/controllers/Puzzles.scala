@@ -1,4 +1,4 @@
-package org.teckhooi.ninesquare.controllers
+package controllers
 
 import play.api.mvc.{Action, Controller}
 import scala.io.Source
@@ -14,7 +14,7 @@ import org.teckhooi.ninesquare.util.NineSquareUtil
  *
  */
 
-object PuzzleController extends Controller{
+object Puzzles extends Controller{
 
   lazy val easyPuzzles = Source.fromInputStream(getClass.getResourceAsStream("/easy.txt")).getLines.toList
   lazy val hardPuzzles = Source.fromInputStream(getClass.getResourceAsStream("/hard.txt")).getLines.toList

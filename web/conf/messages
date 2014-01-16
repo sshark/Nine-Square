@@ -1,0 +1,14 @@
+application.title = 9 Square
+name = Name
+email = Email
+password = Password
+verifyPassword = Verify password
+active = Active
+register-me = Register me
+cancel = Cancel
+exit = Exit
+new-user = New user
+contact = Contact
+about = About
+play-single-game = Play a single game
+sign-in = Sign into my account

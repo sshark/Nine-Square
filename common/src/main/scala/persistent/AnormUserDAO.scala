@@ -23,7 +23,7 @@ object AnormUserDAO extends UserDAO{
           """insert into user
             (email, password, name, date_created, active) values
             ({email}, {password}, {name}, {dateCreated},{active})""")
-          .on('email -> user.email, 'password -> user.password, 'name -> user.name, 'dateCreated -> user.dateCreated, 'active -> user.active)
+          .on('email -> user.email, 'password -> user.password, 'name -> user.name, 'dateCreated -> user.dateCreated, 'active -> true)
           .executeInsert()
     }
   }
@@ -64,8 +64,8 @@ object AnormUserDAO extends UserDAO{
     DB.withConnection {
       implicit connection =>
         SQL("select * from user")().map(row =>
-          User(row[String]("email"), row[String]("password"), row[String]("name"), row[Boolean]("active"),
-            row[Date]("date_created"), row[Long]("oid"))).toList
+          User(row[String]("email"), row[String]("password"), "", row[String]("name"), row[Option[Boolean]]("active"),
+            row[Option[Date]]("date_created"), row[Option[Long]]("oid"))).toList
     }
   }
 }

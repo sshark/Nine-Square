@@ -1,4 +1,4 @@
-package org.teckhooi.ninesquare.controllers
+package controllers
 
 import play.api.mvc.{Action, Controller}
 
