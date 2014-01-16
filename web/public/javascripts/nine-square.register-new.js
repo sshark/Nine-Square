@@ -16,5 +16,5 @@ $(document).ready(function () {
         });
     })
 
-    $(".form-register").slideDown("slow", function () {});
+    $(".edit-user").slideDown("slow", function () {});
 });

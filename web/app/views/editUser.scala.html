@@ -1,6 +1,7 @@
 @(userForm: Form[org.teckhooi.ninesquare.persistent.User])(implicit flash: Flash, lang: Lang)
 
 @import helper.twitterBootstrap._
+@import play.api.i18n.Messages
 
 @main("9 Square") {
     <script src="@routes.Assets.at("javascripts/nine-square.register-new.js")" ></script>
@@ -9,10 +10,10 @@
             <div class="edit-user">
             @helper.form(action = routes.Users.saveUser) {
                 <fieldset>
-                    @helper.inputText(userForm("name"))
-                    @helper.inputText(userForm("email"))
-                    @helper.inputPassword(userForm("password"))
-                    @helper.inputPassword(userForm("verifyPassword"))
+                    @helper.inputText(userForm("name"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("name"))
+                    @helper.inputText(userForm("email"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("email"))
+                    @helper.inputPassword(userForm("password"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("password"))
+                    @helper.inputPassword(userForm("verifyPassword"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("verify-password"))
                 </fieldset>
                 <button class="register-me-btn btn btn-primary btn-primary btn-block" type="submit">Register me</button>
             }

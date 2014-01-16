@@ -59,14 +59,7 @@ body {
 .edit-user form {
     margin-right: 1em;
 }
-/*
-.edit-user label {
-    display: none;
-}
-*/
-.edit-user fieldset > div {
-    margin: 12px 0;
-}
+
 .edit-user .help-block {
     display: inline;
     vertical-align: middle;
@@ -78,27 +71,28 @@ body {
     padding-left: 9px;
     color: #B94A48;
 }
-
-/*
-.form-register {
+.edit-user, .edit-user label {
     display: none;
 }
-.form-register .form-control:focus {
+.edit-user .form-control:focus {
     z-index: 2;
 }
-.form-register input.emailText {
+.edit-user #name {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.form-register input {
+.edit-user input {
     border-radius : 0;
+    width: 100%;
+    margin-bottom: 0px;
 }
-.form-register input.nameText {
+.edit-user #verifyPassword {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
+}
+.edit-user fieldset {
     margin-bottom: 10px;
 }
-*/
 
 .nine-square-panel {
     display: none;
