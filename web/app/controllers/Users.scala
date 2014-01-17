@@ -7,6 +7,7 @@ import org.teckhooi.ninesquare.persistent.impl.AnormUserDAO
 import play.Logger
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.i18n.Messages
 
 /**
  *
@@ -26,7 +27,8 @@ object Users extends Controller {
       "active" -> optional(boolean),
       "dateCreated" -> optional(date),
       "oid" -> optional(longNumber)
-    )(User.apply)(User.unapply)
+    )(User.apply)(User.unapply).verifying(
+        Messages("error.passwords.not.equal"), user => user.password == user.verifyPassword)
   )
 
   def list = Action {
@@ -41,15 +43,6 @@ object Users extends Controller {
 
     Ok(Json.stringify(users))
   }
-
-/*
-  def newUser = Action {
-    AnormUserDAO.insert(User("usr1@nine-square.com", "p@ss", "p@ss", "usr1", true, new Date))
-    AnormUserDAO.insert(User("usr2@nine-square.com", "p@ss", "p@ss", "usr1", true, new Date))
-    AnormUserDAO.insert(User("usr3@nine-square.com", "p@ss", "p@ss", "usr1", true, new Date))
-    Ok(Json.toJson(Map("newUsers" -> "3 users created")))
-  }
-*/
 
   def removeUser(oid: Long) = Action {
     AnormUserDAO.delete(oid)
@@ -70,14 +63,11 @@ object Users extends Controller {
   }
 
   def newUser = Action { implicit request =>
-    Logger.debug("Logging on to new user")
     val form = if (flash.get("error").isDefined) {
-      Logger.debug("Mew user form error")
       userForm.bind(flash.data)
     }
 
     else {
-      Logger.debug("New user form")
       userForm
     }
     Ok(views.html.editUser(form))

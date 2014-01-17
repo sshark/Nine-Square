@@ -9,13 +9,18 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="edit-user">
             @helper.form(action = routes.Users.saveUser) {
+                    @userForm.globalError.map { error =>
+                        <div class="form-help-error">
+                            <span class="error">@error.message</span>
+                        </div>
+                    }
                 <fieldset>
-                    @helper.inputText(userForm("name"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("name"))
-                    @helper.inputText(userForm("email"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("email"))
-                    @helper.inputPassword(userForm("password"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("password"))
-                    @helper.inputPassword(userForm("verifyPassword"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("verify-password"))
+                    @helper.inputText(userForm("name"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.name"))
+                    @helper.inputText(userForm("email"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.email"))
+                    @helper.inputPassword(userForm("password"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.password"))
+                    @helper.inputPassword(userForm("verifyPassword"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.verify-password"))
                 </fieldset>
-                <button class="register-me-btn btn btn-primary btn-primary btn-block" type="submit">Register me</button>
+                <button class="register-me-btn btn btn-primary btn-primary btn-block" type="submit">@Messages("btn.register-me")</button>
             }
             </div>
         </div>

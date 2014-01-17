@@ -56,10 +56,14 @@ body {
     border-top-right-radius: 0;
 }
 
-.edit-user form {
-    margin-right: 1em;
+.edit-user .form-help-error {
+    border: 2px crimson solid;
+    background: deeppink ;
+    padding: 8px;
+    color: white;
+    border-radius: 4px;
+    margin-bottom: 4px;
 }
-
 .edit-user .help-block {
     display: inline;
     vertical-align: middle;
