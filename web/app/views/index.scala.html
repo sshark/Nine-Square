@@ -1,3 +1,7 @@
+@(loginForm: Form[org.teckhooi.ninesquare.persistent.Login])(implicit flash: Flash, lang: Lang)
+
+@import helper.twitterBootstrap._
+
 @main(Messages("application.title")) {
     <script src="@routes.Assets.at("javascripts/nine-square.js")" ></script>
     <div class="row">
@@ -6,19 +10,19 @@
                 <a href="https://github.com/sshark/Nine-Square" target="_blank">
                     <img src="@routes.Assets.at("images/nine-square.png")" class="img-circle"/>
                 </a>
-                <form class="form-signin" role="form" action="/">
-                    <h3 class="form-signin-heading">Please sign in</h3>
-                    <input type="text" id="usernameText" class="form-control" placeholder="Email address" />
-                    <input type="password" class="form-control" placeholder="Password" />
-                    @*
-                    <label class="checkbox">
-                    <input type="checkbox" value="remember-me" /> Remember me
-                    </label>
-                    *@
+                @helper.form(action = routes.Users.signIn, args = 'class -> "form-signin") {
+                    @loginForm.globalError.map { error =>
+                        <div class="alert alert-danger">
+                            <span class="error">@error.message</span>
+                        </div>
+                    }
+                    <fieldset>
+                        @helper.inputText(loginForm("email"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.email"))
+                        @helper.inputPassword(loginForm("password"), '_showConstraints -> false, 'class -> "form-control", 'placeholder -> Messages("form.password"))
+                    </fieldset>
                     <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-                    @*<a class="close-signin-btn btn btn-default btn-block" >Close</a>*@
-                    <a class="form-play-single-game-btn btn btn-default btn-block">Play a single game</a>
-                </form>
+                    <a class="form-play-single-game-btn btn btn-default btn-block">@Messages("btn.play-single-game")</a>
+                }
                 <div class="btn-panel">
                     <button class="open-form-btn btn btn-primary btn-block">Sign in to my account</button>
                     <button class="play-single-game-btn btn btn-default btn-block">Play a single game</button>

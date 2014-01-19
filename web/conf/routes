@@ -6,6 +6,7 @@
 GET           /                            controllers.Application.index
 GET           /new-user                    controllers.Users.newUser
 POST          /new-user                    controllers.Users.saveUser
+POST          /sign-in                     controllers.Users.signIn
 
 # Puzzle
 GET           /api/new-easy-puzzle         controllers.Puzzles.newEasyPuzzle

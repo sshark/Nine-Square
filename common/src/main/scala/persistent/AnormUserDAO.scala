@@ -15,8 +15,8 @@ import play.api.Play.current
  */
 
 object AnormUserDAO extends UserDAO{
-  @Override
-  def insert(user: User) = {
+
+  override def insert(user: User) = {
     DB.withConnection {
       implicit connection =>
         SQL(
@@ -28,13 +28,11 @@ object AnormUserDAO extends UserDAO{
     }
   }
 
-  @Override
-  def clear = DB.withConnection {implicit connection =>
+  override def clear = DB.withConnection {implicit connection =>
     SQL("delete from user").executeUpdate()}
 
 
-  @Override
-  def delete(oid : Long) = {
+  override def delete(oid : Long) = {
     DB.withConnection {
       implicit connection =>
         SQL("delete from achievement where user_oid = {user_oid}").on('user_oid -> oid).executeUpdate()
@@ -42,8 +40,7 @@ object AnormUserDAO extends UserDAO{
     }
   }
 
-  @Override
-  def update(user: User) = {
+  override def update(user: User) = {
     DB.withConnection {
       implicit connection =>
         SQL(
@@ -59,13 +56,21 @@ object AnormUserDAO extends UserDAO{
     }
   }
 
-  @Override
-  def list : List[User] = {
-    DB.withConnection {
+  override def list : List[User] = DB.withConnection {
       implicit connection =>
         SQL("select * from user")().map(row =>
           User(row[String]("email"), row[String]("password"), "", row[String]("name"), row[Option[Boolean]]("active"),
             row[Option[Date]]("date_created"), row[Option[Long]]("oid"))).toList
-    }
   }
+
+  override def exist(email : String) = DB.withConnection {
+      implicit connection =>
+        SQL("select count(*) as c from user where email = {email}").on('email -> email)().head[Long]("c")
+  }  == 1
+
+  override def login(email : String, password : String)= DB.withConnection {
+      implicit connection =>
+        SQL("select count(*) as c from user where email = {email} and password = {password}")
+          .on('email -> email, 'password -> password)().head[Long]("c")
+  } == 1
 }

@@ -2,6 +2,17 @@ $(document).ready(function () {
     // reverts $.fn.button to jqueryui btn and assigns bootstrap button functionality to $.fn
     $.fn.btn = $.fn.button.noConflict()
 
+    if ($("span.error").text().length == 0) {
+        $('.form-signin').hide();
+    } else {
+/*
+        $('.form-signin').show();
+        $(".btn-panel").hide();
+*/
+        $(".open-form-btn").click();
+    }
+
+
     $("#about-btn").click(function () {
         _dialog("About 9 Square", "<h5><strong>How to play...</strong></h5><p>" +
             "Fill in the grid so that every row, every column and every 3x3 box contains the digits 1 through 9.<br/><br/></p>" +
@@ -19,14 +30,8 @@ $(document).ready(function () {
 
     $(".open-form-btn").click(function () {
         $(".btn-panel").hide();
-        $(".form-signin").slideDown('slow', function () {
-        });
+        $(".form-signin").slideDown('slow', function () {});
         $(".form-signin .usernameText").focus();
-    });
-
-    $(".form-signin").submit(function (e) {
-        e.preventDefault();
-        _dialog("Under development", "User sign in is not available yet.");
     });
 
     $("#new-user-btn").click(function (e) {
@@ -57,18 +62,6 @@ $(document).ready(function () {
         dialogClass: "numpad-dialog",
         width: 154
     });
-
-    $("#register-new-user-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        closeOnEscape: false,
-        draggable: false,
-        dialogClass: "register-new-user-dialog"
-    });
-
-    $("#register-new-user-dialog .cancel-btn").click(function() {
-        $("#register-new-user-dialog").dialog("close");
-    })
 
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
@@ -205,6 +198,15 @@ $(document).ready(function () {
             $(".main-menu").toggle();
         });
     });
+
+
+    // Open log in fields if there was a failed to log in
+    if ($("span.error").text().length == 0) {
+        $('.form-signin').hide();
+    } else {
+        $(".open-form-btn").click();
+    }
+
 });
 
 function _dialog(title, message) {
@@ -223,6 +225,8 @@ function _dialog(title, message) {
 }
 
 function switchToGameBoard() {
+    $('.alert').remove();       // clear login error messages, otherwise
+    $('.help-inline').text('')  // log in fields with error messages will be displayed
     $(".main-menu").toggle();
     $("#set-level-dialog").dialog("open");
 }

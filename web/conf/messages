@@ -1,29 +1,32 @@
 # Application
-application.title = 9 Square
+application.title=9 Square
 
 # Form
-form.name = Name
-form.email = Email
-form.password = Password
-form.verify-password = Verify password
+form.name=Name
+form.email=Email
+form.password=Password
+form.verify-password=Verify password
 
 # Table / List
-column.active = Active
+column.active=Active
 
 # Buttons / Links
-btn.register-me = Register me
-btn.cancel = Cancel
-btn.exit = Exit
-btn.new-user = New user
-btn.contact = Contact
-btn.about = About
-btn.play-single-game = Play a single game
-btn.sign-in = Sign into my account
+btn.register-me=Register me
+btn.cancel=Cancel
+btn.exit=Exit
+btn.new-user=New user
+btn.contact=Contact
+btn.about=About
+btn.play-single-game=Play a single game
+btn.sign-in=Sign into my account
 
 # Helps
-help.new-user = Register new user
-help.exit-to-main = Exit to main page
-help.about = About 9 Square
+help.new-user=Register new user
+help.exit-to-main=Exit to main page
+help.about=About 9 Square
 
 # Errors
-error.passwords.not.equal=Passwords are not the same
+error.passwords.not.equal=The passwords are not the same
+error.email.exists=This email is taken
+error.validation=Please rectify these mistakes before submit again
+error.login=Matching email and password not found
