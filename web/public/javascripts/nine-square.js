@@ -2,16 +2,18 @@ $(document).ready(function () {
     // reverts $.fn.button to jqueryui btn and assigns bootstrap button functionality to $.fn
     $.fn.btn = $.fn.button.noConflict()
 
+    var throbber = $('#throbber');
+    $(document).ajaxStart(function () {
+        throbber.show();
+    }).ajaxStop(function () {
+        throbber.hide();
+    });
+
     if ($("span.error").text().length == 0) {
         $('.form-signin').hide();
     } else {
-/*
-        $('.form-signin').show();
-        $(".btn-panel").hide();
-*/
         $(".open-form-btn").click();
     }
-
 
     $("#about-btn").click(function () {
         _dialog("About 9 Square", "<h5><strong>How to play...</strong></h5><p>" +
@@ -36,8 +38,8 @@ $(document).ready(function () {
 
     $("#new-user-btn").click(function (e) {
         $(".container").slideUp('slow', function() {
-            throbber.show();
-            window.location='new-user'
+            $('#throbber').show();
+            window.location='new-user';
         });
     });
 
@@ -65,140 +67,17 @@ $(document).ready(function () {
 
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
-            switchToGameBoard();
+            loadGame();
         });
     });
 
     $(".form-play-single-game-btn").click(function () {
         $(".form-signin").slideUp('slow', function () {
-            $(".btn-panel").show();
             $(".welcome-panel").effect("puff", {}, 500, function () {
-                switchToGameBoard();
+                loadGame();
             });
         });
     });
-
-    $(".easy-level-btn").click(function () {
-        loadBoardFor("easy");
-    });
-
-    $(".hard-level-btn").click(function () {
-        loadBoardFor("hard");
-    });
-
-    var throbber = $('#throbber');
-    $(document).ajaxStart(function () {
-        throbber.show();
-    }).ajaxStop(function () {
-        throbber.hide();
-    });
-
-    $(".check-puzzle-btn").click(function () {
-        $.ajax({
-            url: "/api/check-puzzle",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: JSON.stringify(buildListFrom($(".game-board"), false)),
-            success: function (data, status) {
-                if (data['result']) {
-                    _dialog("No conflict found.", "The numbers are in their correct positions.");
-                } else {
-                    _dialog("Conflicts!!!", "There are conflicting numbers in the puzzle.");
-                }
-            },
-            error: function (xhr, status, error) {
-                _dialog(status, "Failed to check the puzzle because of " + error);
-            }
-        });
-    });
-
-    $(".submit-puzzle-btn").click(function () {
-        var puzzle = buildListFrom($(".game-board"));
-        if (!_.every(puzzle, function (num) {
-            return num != 0
-        })) {
-            _dialog("Incomplete puzzle", "This puzzle is incomplete and will not be submitted.");
-            return;
-        }
-        ;
-        $.ajax({
-            url: "/api/submit-puzzle",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: JSON.stringify(buildListFrom($(".game-board"), false)),
-            success: function (data, status) {
-                if (data['result']) {
-                    _dialog("Congratulations!!!", "You have solved this puzzle. Your achievements will be recorded if you have logged on.");
-                    $(".exit-to-main-btn").click()
-                } else {
-                    _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
-                }
-            },
-            error: function (xhr, status, error) {
-                _dialog(status, "Failed to submit the puzzle because of " + error);
-            }
-        });
-    });
-
-    $(".solve-puzzle-btn").click(function () {
-        $.ajax({
-            url: "/api/solve-puzzle",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: JSON.stringify(buildListFrom($(".game-board"), true)),
-            success: function (data, status) {
-                $(".game-board").children().each(function (ndx) {
-                    $(this).text(data[ndx]);
-                });
-            },
-            error: function (jqXHR, status, error) {
-                _dialog(status, "Failed to load puzzle. An error has occurred in the server, " + error);
-            }
-        });
-    });
-
-    $(".clear-puzzle-btn").click(function () {
-        $(".game-board").children().each(function () {
-            var self = $(this);
-            if (self.hasClass("empty")) {
-                self.html("&nbsp;");
-            }
-            ;
-        });
-    });
-
-    $(".new-puzzle-btn").click(function () {
-        var board = $(".game-board");
-        board.empty();
-        addNewCellsTo(board);
-    });
-
-    $(".one-btn").click(numpadNumericFunGen(numpadDialog, "1"));
-    $(".two-btn").click(numpadNumericFunGen(numpadDialog, "2"));
-    $(".three-btn").click(numpadNumericFunGen(numpadDialog, "3"));
-    $(".four-btn").click(numpadNumericFunGen(numpadDialog, "4"));
-    $(".five-btn").click(numpadNumericFunGen(numpadDialog, "5"));
-    $(".six-btn").click(numpadNumericFunGen(numpadDialog, "6"));
-    $(".seven-btn").click(numpadNumericFunGen(numpadDialog, "7"));
-    $(".eight-btn").click(numpadNumericFunGen(numpadDialog, "8"));
-    $(".nine-btn").click(numpadNumericFunGen(numpadDialog, "9"));
-    $(".clear-btn").click(numpadNumericFunGen(numpadDialog, " "));
-    $(".close-btn").click(function () {
-        numpadDialog.dialog("close")
-    });
-
-    $(".exit-to-main-btn").click(function () {
-        $(".nine-square-panel").effect("explode", {}, 500, function () {
-            $(".game-board").empty();
-            $(".welcome-panel").show();
-            $(".game-menu").toggle();
-            $(".main-menu").toggle();
-        });
-    });
-
 
     // Open log in fields if there was a failed to log in
     if ($("span.error").text().length == 0) {
@@ -206,7 +85,6 @@ $(document).ready(function () {
     } else {
         $(".open-form-btn").click();
     }
-
 });
 
 function _dialog(title, message) {
@@ -261,27 +139,32 @@ function addNewCellsTo(board) {
         url: "/api/new-easy-puzzle",
         context: board
     }).done(function (puzzle) {
-            var self = $(this);
-            for (var i = 0; i < puzzle.length; i++) {
-                var div = $("<div class='cell'>");
+        var self = $(this);
+        for (var i = 0; i < puzzle.length; i++) {
+            var div = $("<div class='cell'>");
 
-                div.attr("id", i);
+            div.attr("id", i);
 
-                if (puzzle[i] != 0) {
-                    div.addClass("seed");
-                } else {
-                    div.addClass("empty");
-                    div.click(function () {
-                        $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
-                    })
-                }
-
-                div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
-
-                div.html(spaceIfZero(puzzle[i]));
-                self.append(div);
+            if (puzzle[i] != 0) {
+                div.addClass("seed");
+            } else {
+                div.addClass("empty");
+                div.click(function () {
+                    $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
+                })
             }
-        });
+
+            div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
+
+            div.html(spaceIfZero(puzzle[i]));
+            self.append(div);
+        }
+    });
+}
+
+function loadGame() {
+    $('#throbber').show();
+    window.location = "game"
 }
 
 function spaceIfZero(num) {

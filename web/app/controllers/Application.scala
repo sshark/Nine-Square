@@ -6,7 +6,7 @@ import play.api.Logger
 
 object Application extends Controller {
 
-  def index = Action {implicit  request =>
+  def index = Action {implicit request =>
     val form = if (flash.get("error").isDefined) {
       Logger.debug("Login error")
       Users.loginForm.bind(flash.data).withGlobalError(flash.get("error").get)

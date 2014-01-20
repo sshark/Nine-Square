@@ -170,7 +170,7 @@ fieldset {
 #throbber-cover {
     /*background: rgb(0, 0, 0);*/
     background-image: url('/assets/images/ui-bg_diagonals-thick_40x40.png');
-    background-repeat: repeat-x repeat-y;
+    background-repeat: repeat;
     z-index: 10;
     opacity: 0.5;
     width: 100%;
