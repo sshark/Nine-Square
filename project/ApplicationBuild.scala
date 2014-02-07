@@ -11,7 +11,8 @@ object ApplicationBuild extends Build {
 //  lazy val root = Project(id = "root", base = file(".")) aggregate(common, gui, cmdline)
   lazy val root = Project(id = "root", base = file(".")) aggregate(common, gui, web)
 
-  lazy val web = play.Project("web", path = file("web")) dependsOn(common, gui)
+  lazy val web = play.Project("web", path = file("web"),
+    settings = play.Project.playScalaSettings ++ Seq(libraryDependencies ++= Dependencies.authorization)) dependsOn(common)
 
   lazy val common = Project(id = "common",
     base = file("common"),
@@ -20,12 +21,6 @@ object ApplicationBuild extends Build {
   lazy val gui = Project(id = "gui",
     base = file("gui"),
     settings = standardSettings ++ Seq(libraryDependencies ++= Dependencies.gui) ++ SbtOneJar.oneJarSettings) dependsOn(common)
-
-/*
-  lazy val cmdline = Project(id = "cmdline",
-    base = file("cmdline"),
-    settings = Defaults.defaultSettings ++ Seq(libraryDependencies ++= Dependencies.cmdline)) dependsOn(common)
-*/
 
   object Dependencies {
     object Compile {
@@ -36,6 +31,7 @@ object ApplicationBuild extends Build {
       val scalaSwing = "org.scala-lang" % "scala-swing" % "2.10.1"
       val akka = "com.typesafe.akka" %% "akka-actor" % "2.2.0"
       val mysql = "mysql" % "mysql-connector-java" % "5.1.28"
+      val deadbolt2 = "be.objectify" %% "deadbolt-scala" % "2.2-RC2"
 
       object Test {
         val scalaTest = "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
@@ -47,6 +43,7 @@ object ApplicationBuild extends Build {
 
     val testkit = Seq(Test.scalaTest, Test.junit)
     val logging = Seq(logback)
+    val authorization = Seq(deadbolt2)
 
     val common = logging ++ testkit ++ Seq(akka, mysql, play.Project.jdbc, play.Project.anorm)
     val gui = logging ++ testkit ++ Seq(scalaSwing)

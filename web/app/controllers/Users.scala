@@ -36,7 +36,7 @@ object Users extends Controller {
       "password" -> nonEmptyText
     )(Login.apply)(Login.unapply)
       .verifying(Messages("error.login"), login => AnormUserDAO.login(login.email, login.password)))
-  
+
   def list = Action {
     val users = AnormUserDAO.list.foldLeft(JsArray())((users, user: User) => users.append(Json.obj(
       "email" -> user.email,
@@ -74,11 +74,8 @@ object Users extends Controller {
           .flashing(Flash(form.data) +
             ("error" -> Messages("error.validation")))
       },
-      success = {newLogin => {
-        Redirect(routes.Application.index)
-           .flashing(Flash(loginForm.data) +
-          ("status" -> "Login successful"))
-        }
+      success = {
+        newLogin => Ok(views.html.game())
       }
     )
   }

@@ -71,8 +71,10 @@ $(document).ready(function () {
             data: JSON.stringify(buildListFrom($(".game-board"), false)),
             success: function (data, status) {
                 if (data['result']) {
-                    _dialog("Congratulations!!!", "You have solved this puzzle. Your achievements will be recorded if you have logged on.");
-                    $(".exit-to-main-btn").click()
+                    _dialog("Congratulations!!!",
+                        "You have solved this puzzle. Your achievements will be recorded if you have logged on.",
+                        function() {$(".exit-to-main-btn").click()});
+
                 } else {
                     _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
                 }
@@ -139,7 +141,7 @@ $(document).ready(function () {
     });
 });
 
-function _dialog(title, message) {
+function _dialog(title, message, onClose) {
     $("<div id=\"dialog-message\"></div>")
         .attr("title", title)
         .html(message)
@@ -150,7 +152,8 @@ function _dialog(title, message) {
                 Ok: function () {
                     $(this).dialog("close");
                 }
-            }
+            },
+            close: function() {onClose();}
         });
 }
 
