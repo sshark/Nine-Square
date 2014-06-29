@@ -74,7 +74,6 @@ $(document).ready(function () {
                     _dialog("Congratulations!!!",
                         "You have solved this puzzle. Your achievements will be recorded if you have logged on.",
                         function() {$(".exit-to-main-btn").click()});
-
                 } else {
                     _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
                 }

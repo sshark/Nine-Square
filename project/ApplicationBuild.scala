@@ -1,6 +1,6 @@
 import com.github.retronym.SbtOneJar
 import sbt._
-import Keys._
+import sbt.Keys._
 
 object ApplicationBuild extends Build {
 
@@ -43,7 +43,8 @@ object ApplicationBuild extends Build {
 
     val testkit = Seq(Test.scalaTest, Test.junit)
     val logging = Seq(logback)
-    val authorization = Seq(deadbolt2)
+    // val authorization = Seq(deadbolt2)
+    val authorization = Seq()
 
     val common = logging ++ testkit ++ Seq(akka, mysql, play.Project.jdbc, play.Project.anorm)
     val gui = logging ++ testkit ++ Seq(scalaSwing)
