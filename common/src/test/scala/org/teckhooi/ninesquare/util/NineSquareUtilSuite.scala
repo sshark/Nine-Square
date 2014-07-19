@@ -143,10 +143,10 @@ class NineSquareUtilSuite extends FunSuite {
     assertEquals(liveExampleSolution, search(liveExample).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2})
   }
 
-  private def logBasicStats(durations: (Long, Long, Long), puzzle: String) {
-    val (min, max, avg) = durations
-    logger.info("It took an average of " + avg + " ms to complete a single puzzle in " + puzzle +
-      ". The maximum and minimum times taken to complete a puzzle were " + max + "ms and " + min + "ms")
+  private def logBasicStats(durations: (Long, Long, Long, Long), puzzle: String) {
+    val (total, min, max, avg) = durations
+    logger.info(s"It took ${total}ms to solve the puzzles in ${puzzle}. An average of ${avg}ms to complete a single " +
+      s"puzzle. The maximum and minimum times taken to complete a puzzle were ${max}ms and ${min}ms")
   }
 
 
@@ -165,6 +165,6 @@ class NineSquareUtilSuite extends FunSuite {
       duration
 
     }}.toList
-    (durations.min, durations.max, (durations.sum / durations.size))
+    (durations.sum, durations.min, durations.max, (durations.sum / durations.size))
   }
 }
