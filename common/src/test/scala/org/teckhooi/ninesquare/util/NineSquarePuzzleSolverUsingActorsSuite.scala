@@ -37,7 +37,7 @@ class NineSquarePuzzleSolverUsingActorsSuite extends FunSuite {
     val durationsToSolveEasyPuzzles = usingActorsToSolve("/easy.txt", solversRouter) // easy puzzle
     logger.info("All easy puzzles solved using " + (System.currentTimeMillis() - easyPuzzleStart) + "ms")
 
-    info("Solving hard puzzles...")
+    logger.info("Solving hard puzzles...")
     val hardPuzzleStart = System.currentTimeMillis()
     val durationsToSolveHardPuzzles = usingActorsToSolve("/top95.txt", solversRouter) // tough puzzle
     logger.info("All hard puzzles solved using " + (System.currentTimeMillis() - hardPuzzleStart) + "ms")
