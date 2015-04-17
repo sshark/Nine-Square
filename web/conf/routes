@@ -17,8 +17,8 @@ POST          /api/submit-puzzle           controllers.Puzzles.submitPuzzle
 POST          /api/check-puzzle            controllers.Puzzles.checkPuzzle
 
 # User
-#POST          /api/new-user                controllers.Users.newUser
-#PUT           /api/update-user          controllers.Users.updateUser
+#POST         /api/new-user                controllers.Users.newUser
+#PUT          /api/update-user          controllers.Users.updateUser
 DELETE        /api/remove-user/:oid        controllers.Users.removeUser(oid:Long)
 DELETE        /api/clear-users             controllers.Users.clearUsers
 GET           /api/users                   controllers.Users.list

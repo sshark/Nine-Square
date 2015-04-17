@@ -1,9 +1,115 @@
 @main(Messages("application.title")) {
     <script src="@routes.Assets.at("javascripts/nine-square.game.js")" ></script>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="nine-square-panel">
+    <div class="nine-square-panel">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button role="button" class="one-btn btn btn-default num-select">1</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="two-btn btn btn-default num-select">2</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="three-btn btn btn-default num-select">3</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="four-btn btn btn-default num-select">4</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="five-btn btn btn-default num-select">5</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="six-btn btn btn-default num-select">6</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="seven-btn btn btn-default num-select">7</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="eight-btn btn btn-default num-select">8</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="nine-btn btn btn-default num-select">9</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="clear-btn btn btn-default num-select">C</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-md-offset-2">
+                <div class="btn-group pull-right" role="group">
+                    <div class="btn-group" role="group">
+                        <button role="button" class="one-btn btn btn-default num-select">1</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="two-btn btn btn-default num-select">2</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="three-btn btn btn-default num-select">3</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="four-btn btn btn-default num-select">4</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="five-btn btn btn-default num-select">5</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="six-btn btn btn-default num-select">6</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="seven-btn btn btn-default num-select">7</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="eight-btn btn btn-default num-select">8</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="nine-btn btn btn-default num-select">9</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="clear-btn btn btn-default num-select">C</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="game-board"></div>
+            </div>
+            <div class="col-md-1">
+                <div class="btn-group pull-left" role="group">
+                    <div class="btn-group" role="group">
+                        <button role="button" class="one-btn btn btn-default num-select">1</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="two-btn btn btn-default num-select num-select">2</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="three-btn btn btn-default num-select num-select">3</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="four-btn btn btn-default num-select num-select">4</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="five-btn btn btn-default num-select num-select">5</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="six-btn btn btn-default num-select num-select">6</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="seven-btn btn btn-default num-select num-select">7</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="eight-btn btn btn-default num-select num-select">8</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button role="button" class="nine-btn btn btn-default num-select num-select">9</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="clear-btn btn btn-default num-select num-select">C</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
                 <ul class="control-board nav nav-justified">
                     <li><a href="#" class="check-puzzle-btn" title="Check the puzzle for mistakes">Check</a></li>
                     <li><a href="#" class="submit-puzzle-btn" title="Submit the puzzle">Submit</a></li>
@@ -19,17 +125,17 @@
         <button class="hard-level-btn btn btn-block btn-default">Hard</button>
     </div>
     <div id="numpad-dialog" title="Pick a number">
-        <button class="one-btn btn btn-default">1</button>
-        <button class="two-btn btn btn-default">2</button>
-        <button class="three-btn btn btn-default">3</button>
-        <button class="four-btn btn btn-default">4</button>
-        <button class="five-btn btn btn-default">5</button>
-        <button class="six-btn btn btn-default">6</button>
-        <button class="seven-btn btn btn-default">7</button>
-        <button class="eight-btn btn btn-default">8</button>
-        <button class="nine-btn btn btn-default">9</button>
-        <button class="clear-btn btn btn-default">C</button>
-        <button class="empty-btn btn btn-default">&nbsp;</button>
-        <button class="close-btn btn btn-default">X</button>
+        <button class="one-btn btn btn-default num-select">1</button>
+        <button class="two-btn btn btn-default num-select">2</button>
+        <button class="three-btn btn btn-default num-select">3</button>
+        <button class="four-btn btn btn-default num-select">4</button>
+        <button class="five-btn btn btn-default num-select">5</button>
+        <button class="six-btn btn btn-default num-select">6</button>
+        <button class="seven-btn btn btn-default num-select">7</button>
+        <button class="eight-btn btn btn-default num-select">8</button>
+        <button class="nine-btn btn btn-default num-select">9</button>
+        <button class="clear-btn btn btn-default num-select">C</button>
+        <button class="empty-btn btn btn-default num-select">&nbsp;</button>
+        <button class="close-btn btn btn-default num-select">X</button>
     </div>
 }

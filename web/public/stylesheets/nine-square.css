@@ -76,6 +76,11 @@ fieldset {
     margin: 0 auto;
 }
 
+button.num-select {
+    height: 56px;
+    width: 56px;
+}
+
 .game-board {
     border: 4px solid black;
     color: white;
