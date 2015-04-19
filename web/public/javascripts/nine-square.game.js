@@ -9,7 +9,9 @@ $(document).ready(function () {
         closeOnEscape: false,
         draggable: false,
         dialogClass: "set-level-dialog",
-        close: function() {$(".game-menu").toggle();}
+        close: function () {
+            $(".game-menu").toggle();
+        }
     });
 
     var numpadDialog = $("#numpad-dialog").dialog({
@@ -57,8 +59,8 @@ $(document).ready(function () {
     $(".submit-puzzle-btn").click(function () {
         var puzzle = buildListFrom($(".game-board"));
         if (!_.every(puzzle, function (num) {
-            return num != 0
-        })) {
+                return num != 0
+            })) {
             _dialog("Incomplete puzzle", "This puzzle is incomplete and will not be submitted.");
             return;
         }
@@ -73,7 +75,9 @@ $(document).ready(function () {
                 if (data['result']) {
                     _dialog("Congratulations!!!",
                         "You have solved this puzzle. Your achievements will be recorded if you have logged on.",
-                        function() {$(".exit-to-main-btn").click()});
+                        function () {
+                            $(".exit-to-main-btn").click()
+                        });
                 } else {
                     _dialog("Rejected", "Your solution is rejected. The numbers in the puzzle conflict with the rule.");
                 }
@@ -118,6 +122,96 @@ $(document).ready(function () {
         addNewCellsTo(board);
     });
 
+
+    function PosXY(x, y) {
+        this.x = x;
+        this.y = y;
+
+        this.incX = function () {
+            if (x + 1 > 8) {
+                return new PosXY(0, y);
+            }
+            else {
+                return new PosXY(x + 1, y);
+            }
+        }
+
+        this.decX = function () {
+            if (x - 1 < 0) {
+                return new PosXY(8, y);
+            }
+            return new PosXY(x - 1, y);
+        }
+
+        this.incY = function () {
+            if (y + 1 > 8) {
+                return new PosXY(x, 0);
+            }
+            else {
+                return new PosXY(x, y + 1);
+            }
+        }
+
+        this.decY = function () {
+            if (y - 1 < 0) {
+                return new PosXY(x, 8)
+            }
+            else {
+                return new PosXY(x, y - 1);
+            }
+        }
+
+        this.toNdx = function () {
+            return this.x + this.y * 9;
+        }
+    }
+
+    function toXYPos(ndx) {
+        return new PosXY(ndx % 9, Math.floor(ndx / 9));
+    }
+
+    var cellId = 0;
+    $("#" + 40).css('background-color', 'red');
+    $(document).keydown(function (e) {
+        switch (e.which) {
+            case 37:
+                var newXYPos = toXYPos(cellId).decX();
+                $('#' + newXYPos.toNdx()).css('background-color', 'red');
+                $('#' + cellId).css('background-color', '');
+                cellId = newXYPos.toNdx();
+                console.log("going left");
+                break;
+
+            case 38:
+                var newXYPos = toXYPos(cellId).decY();
+                $('#' + newXYPos.toNdx()).css('background-color', 'red');
+                $('#' + cellId).css('background-color', '');
+                cellId = newXYPos.toNdx();
+                console.log("going up");
+                break;
+
+            case 39: // right
+                var newXYPos = toXYPos(cellId).incX();
+                $('#' + newXYPos.toNdx()).css('background-color', 'red');
+                $('#' + cellId).css('background-color', '');
+                cellId = newXYPos.toNdx();
+                console.log("going right");
+                break;
+
+            case 40: // down
+                var newXYPos = toXYPos(cellId).incY();
+                $('#' + newXYPos.toNdx()).css('background-color', 'red');
+                $('#' + cellId).css('background-color', '');
+                cellId = newXYPos.toNdx();
+                console.log("going down");
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
+
     $(".one-btn").click(numpadNumericFunGen(numpadDialog, "1"));
     $(".two-btn").click(numpadNumericFunGen(numpadDialog, "2"));
     $(".three-btn").click(numpadNumericFunGen(numpadDialog, "3"));
@@ -152,7 +246,9 @@ function _dialog(title, message, onClose) {
                     $(this).dialog("close");
                 }
             },
-            close: function() {onClose();}
+            close: function () {
+                onClose();
+            }
         });
 }
 
@@ -186,27 +282,27 @@ function addNewCellsTo(board) {
         url: "/api/new-easy-puzzle",
         context: board
     }).done(function (puzzle) {
-            var self = $(this);
-            for (var i = 0; i < puzzle.length; i++) {
-                var div = $("<div class='cell'>");
+        var self = $(this);
+        for (var i = 0; i < puzzle.length; i++) {
+            var div = $("<div class='cell'>");
 
-                div.attr("id", i);
+            div.attr("id", i);
 
-                if (puzzle[i] != 0) {
-                    div.addClass("seed");
-                } else {
-                    div.addClass("empty");
-                    div.click(function () {
-                        $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
-                    })
-                }
-
-                div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
-
-                div.html(spaceIfZero(puzzle[i]));
-                self.append(div);
+            if (puzzle[i] != 0) {
+                div.addClass("seed");
+            } else {
+                div.addClass("empty");
+                div.click(function () {
+                    $("#numpad-dialog").data("id", $(this).attr("id")).dialog("open");
+                })
             }
-        });
+
+            div.addClass(bigCellIndexAt(i) % 2 == 0 ? "even" : "odd");
+
+            div.html(spaceIfZero(puzzle[i]));
+            self.append(div);
+        }
+    });
 }
 
 function spaceIfZero(num) {

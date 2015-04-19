@@ -58,13 +58,6 @@ $(document).ready(function () {
         close: function() {$(".game-menu").toggle();}
     });
 
-    var numpadDialog = $("#numpad-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        dialogClass: "numpad-dialog",
-        width: 154
-    });
-
     $(".play-single-game-btn").click(function () {
         $(".welcome-panel").effect("puff", {}, 500, function () {
             loadGame();

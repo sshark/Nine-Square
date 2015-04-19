@@ -76,9 +76,22 @@ fieldset {
     margin: 0 auto;
 }
 
+.nine-square-panel .row:first-child {
+    margin-bottom: 15px;
+}
+
+.btn-group-vertical > .btn-group,
 button.num-select {
     height: 56px;
     width: 56px;
+}
+
+.vertical-num-panel-right {
+    padding-left: 0px;
+}
+
+.vertical-num-panel-left {
+    padding-right: 0px;
 }
 
 .game-board {
@@ -141,7 +154,7 @@ button.num-select {
 }
 
 .control-board {
-    margin: 4px auto;
+    margin: 15px auto;
 }
 
 .set-level-dialog .ui-dialog-titlebar-close, .numpad-dialog .ui-dialog-titlebar-close {
