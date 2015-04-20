@@ -113,7 +113,7 @@ button.num-select {
 
 .game-board .cell.seed {
     font-weight: bold;
-    color: yellow;
+    border-radius: 50%;
 }
 
 .game-board .odd {
@@ -124,18 +124,6 @@ button.num-select {
 .game-board .even {
     background: #222222;
     border: 1px #222222 solid;
-}
-
-.game-board .empty.odd:hover {
-    background: white;
-    border: 1px black solid;
-    color: gray;
-}
-
-.game-board .empty.even:hover {
-    background: white;
-    border: 1px black solid;
-    color: #222222;
 }
 
 .row {
@@ -183,6 +171,7 @@ button.num-select {
     width: 100%;
     height: 100%;
     display: none;
+    display: none;
 }
 
 #throbber-cover {
@@ -197,6 +186,7 @@ button.num-select {
     top: 0;
     left: 0;
 }
+
 #throbber-message {
     color: black;
     background: #ffffff;
