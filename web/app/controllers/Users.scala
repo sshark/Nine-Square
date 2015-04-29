@@ -1,13 +1,13 @@
 package controllers
 
-import play.api.mvc.{Flash, Action, Controller}
-import play.api.libs.json.{JsArray, Json}
-import org.teckhooi.ninesquare.persistent.{Login, User}
 import org.teckhooi.ninesquare.persistent.impl.AnormUserDAO
+import org.teckhooi.ninesquare.persistent.{Login, User}
 import play.Logger
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
+import play.api.libs.json.{JsArray, Json}
+import play.api.mvc.{Action, Controller, Flash}
 
 /**
  *
@@ -81,8 +81,8 @@ object Users extends Controller {
   }
 
   def newUser = Action { implicit request =>
-    val form = if (flash.get("error").isDefined) {
-      userForm.bind(flash.data).withGlobalError(flash.get("error").get)
+    val form = if (request.flash.get("error").isDefined) {
+      userForm.bind(request.flash.data).withGlobalError(request.flash.get("error").get)
     } else {
       userForm
     }

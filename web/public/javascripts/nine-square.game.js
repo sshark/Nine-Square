@@ -227,44 +227,44 @@ var cellId = 41;
 function PosXY(x, y) {
     this.x = x;
     this.y = y;
+}
 
-    this.incX = function () {
-        if (x + 1 > 8) {
-            return new PosXY(0, y);
-        }
-        else {
-            return new PosXY(x + 1, y);
-        }
+PosXY.prototype.incX = function () {
+    if (this.x + 1 > 8) {
+        return new PosXY(0, this.y);
     }
+    else {
+        return new PosXY(this.x + 1, this.y);
+    }
+}
 
-    this.decX = function () {
-        if (x - 1 < 0) {
-            return new PosXY(8, y);
-        }
-        return new PosXY(x - 1, y);
+PosXY.prototype.decX = function () {
+    if (this.x - 1 < 0) {
+        return new PosXY(8, this.y);
     }
+    return new PosXY(this.x - 1, this.y);
+}
 
-    this.incY = function () {
-        if (y + 1 > 8) {
-            return new PosXY(x, 0);
-        }
-        else {
-            return new PosXY(x, y + 1);
-        }
+PosXY.prototype.incY = function () {
+    if (this.y + 1 > 8) {
+        return new PosXY(this.x, 0);
     }
+    else {
+        return new PosXY(this.x, this.y + 1);
+    }
+}
 
-    this.decY = function () {
-        if (y - 1 < 0) {
-            return new PosXY(x, 8)
-        }
-        else {
-            return new PosXY(x, y - 1);
-        }
+PosXY.prototype.decY = function () {
+    if (this.y - 1 < 0) {
+        return new PosXY(this.x, 8)
     }
+    else {
+        return new PosXY(this.x, this.y - 1);
+    }
+}
 
-    this.toNdx = function () {
-        return this.x + this.y * 9;
-    }
+PosXY.prototype.toNdx = function () {
+    return this.x + this.y * 9;
 }
 
 function nextAvailableCell(ndx, dir) {

@@ -130,38 +130,6 @@ object NineSquareUtil {
         .getOrElse(Map.empty))
       .getOrElse(estimates) // all sizes are equal to 1
 
-  /*
-  Originally was,
-      val sortedEstimates = estimates.toList.sortBy{_._2.size}
-      val (pos, numbers) = sortedEstimates.find(_._2.size > 1).get
-      val numbersBuffer = numbers.toBuffer
-      while (!numbersBuffer.isEmpty) {
-        val head = numbersBuffer.remove(0)
-        val result = search(eliminate(estimates.updated(pos, List(head)), pos, head))
-        if (result != Map.empty) return result
-      }
-    }
-    Map.empty
-
-    then with suggestions from the community it refactored into
-
-      estimates
-        .toList
-        .sortBy(_._2.size)
-        .find(_._2.size > 1)
-        .map({
-        case (pos, numbers) => {
-          numbers.foldLeft(Map.empty[Int, List[Int]])((acc, i) => {
-            if (acc.isEmpty) {
-              search(eliminate(estimates.updated(pos, List(i)), pos, i))
-            } else {
-              acc
-            }
-          })
-        }
-      }).getOrElse(Map.empty)
-   */
-
   /**
    * It is a helper method to search function for elimination
    *
@@ -202,36 +170,6 @@ object NineSquareUtil {
    */
   def solve(puzzle : List[Int]) = {
     search(NineSquareUtil.toMapWithGuesses(puzzle)).toList.sortBy(_._1).flatMap(_._2)
-  }
-
-  /**
-   * Solves the puzzle starting from given position i.e. pos
-   *
-   * This method of solving is deprecated because it is too slow to solve the puzzle.
-   *
-   * @param xs array to solve
-   * @param pos pos to start
-   * @return List of solutions if there are more than 1 solution
-   *
-   */
-  @deprecated
-  def solve(xs : List[Int], pos: Int): Stream[List[Int]] = {
-    if (!isConflictAt(xs.updated(pos, 0), pos, xs(pos))) {
-      val pos = xs.indexOf(0)
-      if (pos < 0) Stream(xs) else for (i <- (1 to 9).toStream; z <- solve(xs.updated(pos, i), pos)) yield z
-    } else Stream.empty
-  }
-
-  /**
-   * Solves the puzzle starting at the 1st position
-   *
-   * @param xs array to solve
-   * @return List of solutions if there are more than 1 solution
-   *
-   */
-  @deprecated
-  def solveAll(xs : List[Int]) = {
-    (1 to 9).toStream.flatMap(x => solve(xs.updated(xs.indexOf(0), x), xs.indexOf(0)))
   }
 
   /**
