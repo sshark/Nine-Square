@@ -39,7 +39,7 @@ $(document).ready(function () {
     $("#new-user-btn").click(function (e) {
         $(".container").slideUp('slow', function() {
             $('#throbber').show();
-            window.location='new-user';
+            window.location='user';
         });
     });
 

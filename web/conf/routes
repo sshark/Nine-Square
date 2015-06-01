@@ -2,10 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# Application
 GET           /                            controllers.Application.index
-GET           /new-user                    controllers.Users.newUser
-POST          /new-user                    controllers.Users.saveUser
+GET           /user                        controllers.Users.newUser
+POST          /user                        controllers.Users.updateUser
 POST          /sign-in                     controllers.Users.signIn
 GET           /game                        controllers.Games.index
 
@@ -16,9 +16,9 @@ POST          /api/solve-puzzle            controllers.Puzzles.solvePuzzle
 POST          /api/submit-puzzle           controllers.Puzzles.submitPuzzle
 POST          /api/check-puzzle            controllers.Puzzles.checkPuzzle
 
-# User
+# User API
 #POST         /api/new-user                controllers.Users.newUser
-#PUT          /api/update-user          controllers.Users.updateUser
+#PUT          /api/update-user             controllers.Users.updateUser
 DELETE        /api/remove-user/:oid        controllers.Users.removeUser(oid:Long)
 DELETE        /api/clear-users             controllers.Users.clearUsers
 GET           /api/users                   controllers.Users.list

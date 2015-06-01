@@ -6,7 +6,7 @@
     <script src="@routes.Assets.at("javascripts/nine-square.register-new.js")" ></script>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            @helper.form(action = routes.Users.saveUser, args = 'class -> "edit-user") {
+            @helper.form(action=routes.Users.updateUser, 'class -> "edit-user", 'method -> "post") {
                     @userForm.globalError.map { error =>
                         <div class="alert alert-danger">
                             <span class="error">@error.message</span>

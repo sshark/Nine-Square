@@ -89,7 +89,8 @@ object Users extends Controller {
     Ok(views.html.editUser(form))
   }
 
-  def saveUser = Action { implicit request =>
+  // this method can be used for update and create new user
+  def updateUser = Action { implicit request =>
     val newUserForm = userForm.bindFromRequest()
 
     newUserForm.fold(
