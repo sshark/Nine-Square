@@ -1,6 +1,4 @@
-@(userForm: Form[org.teckhooi.ninesquare.persistent.User])(implicit flash: Flash, lang: Lang)
-
-@import helper.twitterBootstrap._
+@(userForm: Form[org.teckhooi.ninesquare.persistent.User])(implicit flash: Flash, messages: Messages)
 
 @main(Messages("application.title")) {
     <script src="@routes.Assets.at("javascripts/nine-square.register-new.js")" ></script>

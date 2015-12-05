@@ -1,12 +1,13 @@
 package controllers
 
-import org.teckhooi.ninesquare.persistent.impl.AnormUserDAO
 import org.teckhooi.ninesquare.persistent.{Login, User}
 import play.Logger
+import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
-import play.api.libs.json.{JsArray, Json}
+import play.api.i18n.Messages.Implicits._
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller, Flash}
 
 /**
@@ -20,7 +21,7 @@ object Users extends Controller {
 
   private val userForm : Form[User] = Form(
     mapping(
-      "email" -> email.verifying(Messages("error.email.exists"), email => !AnormUserDAO.exist(email)),
+      "email" -> email.verifying(Messages("error.email.exists"), email => true),  // TODO check if email exist with database
       "password" -> nonEmptyText,
       "verifyPassword" -> nonEmptyText,
       "name" -> nonEmptyText,
@@ -35,9 +36,10 @@ object Users extends Controller {
       "email" -> email,
       "password" -> nonEmptyText
     )(Login.apply)(Login.unapply)
-      .verifying(Messages("error.login"), login => AnormUserDAO.login(login.email, login.password)))
+      .verifying(Messages("error.login"), login => true)) // TODO check login using database i.e. AnormUserDAO.login(login.email, login.password)))
 
   def list = Action {
+/*  TODO retrieve users from database
     val users = AnormUserDAO.list.foldLeft(JsArray())((users, user: User) => users.append(Json.obj(
       "email" -> user.email,
       "password" -> user.password,
@@ -46,11 +48,13 @@ object Users extends Controller {
       "active" -> user.active,
       "oid" -> user.oid
     )))
-    Ok(Json.stringify(users))
+*/
+    val users = List[String]()  // TODO temporarily
+    Ok(Json.toJson(users))
   }
 
   def removeUser(oid: Long) = Action {
-    AnormUserDAO.delete(oid)
+//    AnormUserDAO.delete(oid)  // TODO remove user from database
     Logger.debug("User with oid " + oid + " removed.")
     Ok(Json.toJson(Map("deleted" -> ("{oid : " + oid + "}"))))
   }
@@ -63,7 +67,7 @@ object Users extends Controller {
   */
 
   def clearUsers = Action {
-    AnormUserDAO.clear
+//    AnormUserDAO.clear  // TODO remove all users
     Ok(Json.toJson(Map("clearUsers" -> "{deleted : Ok }")))
   }
 
@@ -101,7 +105,7 @@ object Users extends Controller {
       },
       success = { newUser => {
           Logger.debug("New user is inserted, " + newUser.email)
-          AnormUserDAO.insert(newUser)
+//          AnormUserDAO.insert(newUser)  // TODO add new user
           Redirect(routes.Application.index)
         }
       }

@@ -1,18 +1,5 @@
 package org.teckhooi.ninesquare.util
 
-import akka.routing.RoundRobinRouter
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.FunSuite
-import scala.io.Source
-import org.slf4j.LoggerFactory
-import akka.actor.{PoisonPill, ActorRef, Props, ActorSystem}
-import akka.pattern.ask
-import scala.concurrent.{Future, Await, ExecutionContext}
-import scala.concurrent.forkjoin.ForkJoinPool
-import scala.concurrent.duration._
-import java.util.concurrent.{Executors, CountDownLatch}
-
 /**
  * Copyright (C) March 21, 2013
  *
@@ -21,7 +8,7 @@ import java.util.concurrent.{Executors, CountDownLatch}
  * @author Lim, Teck Hooi
  *
  */
-
+/*
 @RunWith(classOf[JUnitRunner])
 class NineSquarePuzzleSolverUsingActorsSuite extends FunSuite {
 
@@ -55,3 +42,4 @@ class NineSquarePuzzleSolverUsingActorsSuite extends FunSuite {
     Await.ready(Future.sequence(futures), Duration.Inf)
   }
 }
+*/
