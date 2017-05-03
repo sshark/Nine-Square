@@ -14,7 +14,7 @@ import org.teckhooi.ninesquare.util.NineSquareUtil
  *
  */
 
-object Puzzles extends Controller{
+class Puzzles extends Controller{
 
   lazy val easyPuzzles = Source.fromInputStream(getClass.getResourceAsStream("/easy.txt")).getLines.toList
   lazy val hardPuzzles = Source.fromInputStream(getClass.getResourceAsStream("/hard.txt")).getLines.toList

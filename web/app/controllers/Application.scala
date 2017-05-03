@@ -12,8 +12,7 @@ import play.api.i18n.Messages.Implicits._
   *
   */
 
-object Application extends Controller {
-
+class Application extends Controller {
   def index = Action {implicit request =>
     val form = if (request.flash.get("error").isDefined) {
       Logger.debug("Login error")

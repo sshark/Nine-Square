@@ -17,7 +17,7 @@ import play.api.mvc.{Action, Controller, Flash}
  *
  */
 
-object Users extends Controller {
+class Users extends Controller {
 
   private val userForm : Form[User] = Form(
     mapping(
@@ -30,13 +30,6 @@ object Users extends Controller {
       "oid" -> optional(longNumber)
     )(User.apply)(User.unapply)
       .verifying(Messages("error.passwords.not.equal"), user => user.password == user.verifyPassword))
-
-  val loginForm : Form[Login] = Form(
-    mapping(
-      "email" -> email,
-      "password" -> nonEmptyText
-    )(Login.apply)(Login.unapply)
-      .verifying(Messages("error.login"), login => true)) // TODO check login using database i.e. AnormUserDAO.login(login.email, login.password)))
 
   def list = Action {
 /*  TODO retrieve users from database
@@ -72,7 +65,7 @@ object Users extends Controller {
   }
 
   def signIn = Action {implicit request =>
-    loginForm.bindFromRequest().fold(
+    Users.loginForm.bindFromRequest().fold(
       hasErrors = { form =>
         Redirect(routes.Application.index)
           .flashing(Flash(form.data) +
@@ -111,4 +104,13 @@ object Users extends Controller {
       }
     )
   }
+}
+
+object Users {
+  val loginForm : Form[Login] = Form(
+    mapping(
+      "email" -> email,
+      "password" -> nonEmptyText
+    )(Login.apply)(Login.unapply)
+      .verifying(Messages("error.login"), login => true)) // TODO check login using database i.e. AnormUserDAO.login(login.email, login.password)))
 }

@@ -20,14 +20,14 @@ lazy val common = project
 
 libraryDependencies in ThisBuild ++=  Seq(
   "org.clapper" %% "grizzled-slf4j" % "1.0.2",
-  "com.typesafe.akka" %% "akka-slf4j" % "2.3.13",
+  "com.typesafe.akka" %% "akka-slf4j" % "2.5.1",
   "net.codingwell" %% "scala-guice" % "4.0.1"
 )
 
 libraryDependencies in common ++= Seq(
   "com.typesafe.slick" %% "slick" % "3.1.0",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.13",
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "com.typesafe.akka" %% "akka-actor" % "2.5.1",
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   "junit" % "junit" % "4.12"
 )
 
@@ -42,15 +42,15 @@ libraryDependencies in web ++= Seq(
   "be.objectify" %% "deadbolt-scala" % "2.4.1",
   "org.webjars" %% "webjars-play" % "2.4.0",
   "net.ceedubs" %% "ficus" % "1.1.2",
-  "com.typesafe.play" %% "play-slick" % "1.1.1",
-  "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1",
+  "com.typesafe.play" %% "play-slick" % "2.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
   "com.h2database" % "h2" % "1.4.187",
   "mysql" % "mysql-connector-java" % "5.1.36"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
-resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
+resolvers in ThisBuild += "Atlassian Releases" at "https://maven.atlassian.com/public/"
 
 resolvers += Resolver.url("Typesafe Ivy releases", url("https://repo.typesafe.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns)
 
