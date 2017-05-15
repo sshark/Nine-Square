@@ -16,6 +16,12 @@ object BetterSolverApp extends App {
   } yield (cross(colBlk, rowBlk))
 
   val all = horizontals ++ verticals ++ blocks
+/*
+  val peers = cross(alphas, digits).foldLeft(Map.empty[String, Set[String]])((m,a) => m + (a -> all.filter(_.contains(a))))
+    .foldLeft(Set.empty[String])(_ ++ _.toSet)))
+*/
+
+  val peers = cross(alphas, digits).foldLeft(Map.empty[String, Seq[Seq[String]]])((m,a) => m + (a -> all.filter(_.contains(a))))
 
   val emptyPuzzle = "3..62..7....7...2...........5...81......4...8.........7.25......4....8........3.."
 
@@ -74,34 +80,61 @@ object BetterSolverApp extends App {
       println
     })
 
+  def print2List(puzzle: Map[String, Set[Char]]) = {
+    print("List(")    
+    puzzle.toList.sortBy(_._1).map(_._2).grouped(9).toList.foreach(line => {
+      line.foreach(x => {
+        print("\"")
+        x.foreach(print)
+        print("\",")
+      })
+      println
+    })  
+    print(")")    
+  }
+
+
   prettyPrint(init(emptyPuzzle))
 
-  def isConflict(cell: String, solution: Map[String, Set[Char]]) = {
-    def isConflictPerCat(xs: Seq[Set[Char]]): Boolean =  
-      xs match {    
-        case ys if ys.head.isEmpty => true
-        case ys if ys.size == 1 => false
-        case ys => ys.tail.contains(ys.head) || isConflictPerCat(xs.tail)
-      }
+  def isConflict(solution: Map[String, Set[Char]]): Boolean = {
+    def isConflictPerCat(xs: Seq[Set[Char]]): Boolean =
+      if (xs.size < 2) false else xs.tail.contains(xs.head) || isConflictPerCat(xs.tail)
+      
+    if (solution.exists(_._2.isEmpty)) true else {
+      val singleDigit = solution.filter(_._2.size == 1)
+      val a = singleDigit.keys
+        .map(k => peers(k))
+        .map(v => v.map(cells => cells.flatMap(cell => singleDigit.get(cell))))
+          
+      a.exists(x => x.exists(isConflictPerCat))      
+    }
+ }
 
-    all.filter(_.contains(cell))
-      .map(xs => xs.map(solution(_)).filter(_.size < 2))
-      .exists(isConflictPerCat)
-  }
+  def eliminate(i: Char, cell: String, solution: Map[String, Set[Char]], 
+    neighbours: Set[String]): Option[Map[String, Set[Char]]] = {
+    
+    val affectedCells = neighbours.filter(cell => {
+      val chars = solution(cell)
+      chars.size == 2 && chars.contains(i)
+    })
 
-  def eliminate(i: Char, cell: String, solution: Map[String, Set[Char]]): Option[Map[String, Set[Char]]] = {
-    val cells = all.filter(_.contains(cell)).flatten.toSet - cell
     val newSolution = cells.foldLeft(solution)((m, c) => m + (c -> (m(c) - i)))
-    if (isConflict(cell, newSolution)) None else Some(newSolution)
-  }
+    prettyPrint(newSolution)
+    println(s"Affected: $affectedCells")
+
+    affectedCells.foldLeft(Option(newSolution))((s, c) => s.flatMap(m => eliminate(i, c, m, neighbours - c)))
+      .flatMap(xs => if (isConflict(xs)) None else Some(xs))
+  } 
 
   def solve(puzzle: Map[String, Set[Char]]): Option[Map[String, Set[Char]]] = {
     puzzle.filter(_._2.size > 1).toList.sortBy(_._2.size).headOption match {
       case None => Some(puzzle)
       case Some((cord, nums)) => {
-        println(s"$cord => $nums")       
+        println(s"$cord => $nums")
         prettyPrint(puzzle)
-       nums.map(num => eliminate(num, cord, puzzle + (cord -> Set(num))) match {
+        println
+        // print2List(puzzle)
+        nums.map(num => eliminate(num, cord, puzzle + (cord -> Set(num)), all.filter(_.contains(cell)).flatten.toSet - cord) match {
           case Some(x) => solve(x)
           case _ => None
         }).flatten.headOption
@@ -109,39 +142,21 @@ object BetterSolverApp extends App {
     }
   }
 
-  println(solve(init(emptyPuzzle)))
+  // println(solve(init(emptyPuzzle)))
+
+  val zero = List("3","9","841","6","2","41","5","7","41",
+  "84561","861","84561","7","89513","49513","496","2","49613",
+  "845612","86127","845617","84913","89513","49513","496","849613","49613",
+  "4962","5","49673","923","9673","8","1","4963","496273",
+  "9612","61273","96173","9123","4","9561273","9627","9563","8",
+  "849612","861273","8496173","9123","956173","9561273","49627","49563","4956273",
+  "7","8613","2","5","89613","49613","496","4961","4961",
+  "9561","4","95613","9123","96173","961273","8","9561","956127",
+  "89561","861","89561","84912","89617","496127","3","49561","4956127")
+
+  val locs = cross(alphas, digits)
+
+  def toNumSet(l: List[String]) = locs.zip(l).foldLeft(Map.empty[String, Set[Char]])((m, s) => m + (s._1 -> s._2.toSet))
+
+  println(solve(toNumSet(zero)))
 }
-
-    /*
-    def _solve(guesses: Set[Char], cord: String, solution: Map[String, Set[Char]]): Option[Map[String, Set[Char]]] =
-      guesses.toList match {
-        case Nil => None
-        case x +: xs =>
-          val nextStage = eliminate(x, cord, solution)
-          if (nextStage.exists(_._2.isEmpty)) _solve(guesses.tail, cord, solution)
-          else solve(nextStage) match {
-            case None =>  _solve(guesses.tail, cord, solution)
-            case x => x
-          }
-      }
-
-    val sortedPuzzle = puzzle.filter(_._2.size > 1).toList.sortBy(_._2.size)
-    prettyPrint(puzzle)
-    sortedPuzzle match {
-      case Nil => Some(puzzle)
-      case (cord, nums) :: xs => _solve(nums, cord, puzzle) match {
-        case None => None
-        case Some(m) => solve(m)
-      }
-
-def prettyPrintForInt(puzzle: Map[String, Set[Int]]) =
-    puzzle.toList.sortBy(_._1).map(_._2).grouped(9).toList.foreach(line => {
-      line.foreach(x => {x.foreach(print); print(" " * (9 - x.size))})
-      println
-    })
-
-  val solved = Map("D7" -> Set(1), "C6" -> Set(3), "A9" -> Set(4), "G1" -> Set(7), "B5" -> Set(8), "H2" -> Set(4), "E8" -> Set(6), "I5" -> Set(1), "F9" -> Set(5), "A4" -> Set(6), "C1" -> Set(9), "D2" -> Set(5), "F4" -> Set(9), "G5" -> Set(9), "H1" -> Set(1), "E3" -> Set(3), "H6" -> Set(7), "B9" -> Set(3), "D8" -> Set(3), "C8" -> Set(8), "C7" -> Set(6), "A5" -> Set(2), "I2" -> Set(6), "D1" -> Set(6), "B6" -> Set(9), "I1" -> Set(5), "E9" -> Set(8), "I6" -> Set(2), "H5" -> Set(6), "F3" -> Set(1), "E2" -> Set(9), "G4" -> Set(5), "F7" -> Set(2), "E1" -> Set(2), "C9" -> Set(1), "D5" -> Set(7), "E6" -> Set(5), "F2" -> Set(7), "I8" -> Set(9), "B3" -> Set(6), "G8" -> Set(1), "H4" -> Set(3), "A2" -> Set(8), "I3" -> Set(8), "C4" -> Set(4), "H9" -> Set(2), "G3" -> Set(2), "A1" -> Set(3), "H8" -> Set(5), "B7" -> Set(5), "A6" -> Set(1), "B2" -> Set(1), "I7" -> Set(3), "G7" -> Set(4), "E5" -> Set(4), "D4" -> Set(2), "F6" -> Set(6), "D9" -> Set(9), "F1" -> Set(8), "C3" -> Set(7), "I9" -> Set(7), "E7" -> Set(7), "F8" -> Set(4), "A8" -> Set(7), "H3" -> Set(9), "B4" -> Set(7), "G2" -> Set(3), "C5" -> Set(5), "A3" -> Set(5), "D6" -> Set(8), "B1" -> Set(4), "I4" -> Set(8), "G9" -> Set(6), "H7" -> Set(8), "B8" -> Set(2), "G6" -> Set(4), "A7" -> Set(9), "F5" -> Set(3), "C2" -> Set(2), "D3" -> Set(4), "E4" -> Set(1))
-
-  prettyPrintForInt(solved)
-
-    */
