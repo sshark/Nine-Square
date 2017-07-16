@@ -50,7 +50,7 @@ To run the excutable JAR,
 
 Background
 -
-Nine Square is a result of an on going effort to learn Functional Programming (FP) languages. After working with Java, an imperative Object Oriented (OO) language, for more than a decade, it is not easy to pick up a language from a different paradigm, and be effective about it. It challenges the mind to think differently and solves each problem in a different manner.
+Nine Square is a result of an on going effort to learn Functional Programming (FP) languages. After working with Java, an imperative Object Oriented (OO) language, for more than a decade, it is not easy to pick up a language from a different paradigm, and be effective. It challenges the mind to think differently and solves each problem in completely different ways.
 
 There are many obstacles along the way and fortunately, with the help from these people from the forums and website,
 
@@ -62,7 +62,7 @@ There are many obstacles along the way and fortunately, with the help from these
 
 * http://norvig.com/sudoku.html
 
-this project is completed. Completing this project has shown how immutable variables were  utilized and how to write in Scala idiom by using Scala functions effectively.
+This project is written using as much Scala idioms and leveraging on FP patterns whereever make sense.
 
 Quirks
 -
