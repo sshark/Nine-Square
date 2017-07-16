@@ -19,7 +19,8 @@ lazy val common = project
   .settings(commonSettings)
 
 libraryDependencies in ThisBuild ++=  Seq(
-  "org.clapper" %% "grizzled-slf4j" % "1.0.2",
+  "org.clapper" %% "grizzled-slf4j" % "1.3.1",
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe.akka" %% "akka-slf4j" % "2.5.1",
   "net.codingwell" %% "scala-guice" % "4.0.1"
 )

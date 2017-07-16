@@ -1,26 +1,31 @@
 package org.teckhooi.ninesquare.util
 
 /**
- * Copyright (C) March 21, 2013
- *
- * Solves a 9x9 Suduko puzzle with guidance and hints from the following websites,
- *
- * <a>http://stackoverflow.com/questions/15469303/how-do-i-accumulate-results-without-using-a-mutable-arraybuffer</a>
- * <a>http://scala-programming-language.1934581.n4.nabble.com/25-lines-Sudoku-solver-in-Scala-td1987506.html</a>
- *
- * Finally, using constraint propagation and search as demonstrated by Peter Norvig here, <a>http://norvig.com/sudoku.html</a>,
- * using Python, I managed to solve each puzzle in less than a second.
- *
- * search and eliminate functions were refactored into functional style after seeking advices from the community,
- * please refer to
- *
- * http://stackoverflow.com/questions/17771573/suggestions-to-refactor-a-scala-function-with-multiple-exits/17783001
- *
- * for the discussion details.
- *
- * @author Lim, Teck Hooi
- *
- */
+  * Copyright (C) March 21, 2013
+  *
+  * Solves a 9x9 Suduko puzzle with guidance and hints from the following websites,
+  *
+  * <a>http://stackoverflow.com/questions/15469303/how-do-i-accumulate-results-without-using-a-mutable-arraybuffer</a>
+  * <a>http://scala-programming-language.1934581.n4.nabble.com/25-lines-Sudoku-solver-in-Scala-td1987506.html</a>
+  *
+  * Finally, using constraint propagation and search as demonstrated by Peter Norvig here, <a>http://norvig.com/sudoku.html</a>,
+  * using Python, I managed to solve each puzzle in less than a second.
+  *
+  * search and eliminate functions were refactored into functional style after seeking advices from the community,
+  * please refer to
+  *
+  * http://stackoverflow.com/questions/17771573/suggestions-to-refactor-a-scala-function-with-multiple-exits/17783001
+  *
+  * for the discussion details.
+  *
+  * THIS UTILITY IS DEPRECATED because these functions are rewritten in a better way. Please use
+  * <code>util.Sudoku</code> functions.
+  *
+  * @author Lim, Teck Hooi
+  *
+  */
+
+@deprecated
 object NineSquareUtil {
   type Estimates = Map[Int, List[Int]]
   type Entry = (Int, List[Int])

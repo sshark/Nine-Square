@@ -30,6 +30,12 @@ To test,
 
     $ sbt test
 
+To run web application demo,
+
+    $ sbt
+    > project web
+    [web] $ run
+
 To package and deploy as single JAR file,
 
     $ sbt one-jar

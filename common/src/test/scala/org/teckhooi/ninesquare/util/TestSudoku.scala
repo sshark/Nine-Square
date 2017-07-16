@@ -19,7 +19,7 @@ import scala.io.Source
  */
 
 @RunWith(classOf[JUnitRunner])
-class NineSquareUtilSuite extends FunSuite {
+class TestSudoku extends FunSuite {
 
   val rightSolution = List(
     1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -92,7 +92,7 @@ class NineSquareUtilSuite extends FunSuite {
     5, 1, 2, 8, 9, 6, 4, 3, 7,
     8, 4, 9, 3, 1, 7, 6, 2, 5)
 
-  val solutionToVeryHardSheetInString = Vector(List(
+  val solutionToVeryHardSheetInString = List(
     2, 4, 1, 8, 6, 5, 3, 7, 9,
     3, 5, 6, 4, 9, 7, 2, 1, 8,
     8, 7, 9, 1, 3, 2, 5, 6, 4,
@@ -101,7 +101,7 @@ class NineSquareUtilSuite extends FunSuite {
     7, 3, 5, 2, 4, 1, 9, 8, 6,
     4, 6, 7, 9, 1, 3, 8, 2, 5,
     5, 1, 8, 7, 2, 4, 6, 9, 3,
-    9, 2, 3, 6, 5, 8, 1, 4, 7))
+    9, 2, 3, 6, 5, 8, 1, 4, 7)
 
   def logger = LoggerFactory.getLogger(getClass)
 
@@ -122,7 +122,7 @@ class NineSquareUtilSuite extends FunSuite {
   }
 
   test("Solve a very hard sheet presented in a long string.") {
-//    assertEquals(solutionToVeryHardSheetInString, solveAll(veryHardSheetInString.map(x => x - 0x30).toList))
+    assertEquals(solutionToVeryHardSheetInString, solve(veryHardSheetInString.map(x => x - 0x30).toList))
   }
 
   test("Verify a good empty sheet") {
@@ -133,39 +133,33 @@ class NineSquareUtilSuite extends FunSuite {
     assertFalse(isSheetOK(veryHardSheet.updated(26, 2)))
   }
 
-  test("Solve easy and hard Sudoku. This test will take a while to complete") {
+  test("Solve easy, hard and hardest Sudoku puzzles. It will take a while longer to complete") {
     info("Solving easy puzzles...")
-    logBasicStats(solvePuzzlesUsing("/easy.txt"), "/easy.txt") // easy puzzle
+    logBasicStats(solvePuzzlesUsing("/easy.txt")) // easy puzzle
     info("Solving hard puzzles...")
-    logBasicStats(solvePuzzlesUsing("/top95.txt"), "/top95.txt") // hardest puzzle
+    logBasicStats(solvePuzzlesUsing("/top95.txt")) // hard puzzle
+    info("Solving hardest puzzles...")
+    logBasicStats(solvePuzzlesUsing("/hardest17.txt")) // hardest puzzle
   }
 
   test("Solve a hard live example") {
     assertEquals(liveExampleSolution, search(liveExample).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2})
   }
 
-  private def logBasicStats(durations: (Long, Long, Long, Long), puzzle: String) {
+  private def logBasicStats(durations: (Long, Long, Long, Long)) {
     val (total, min, max, avg) = durations
-    logger.info(s"It took ${total}ms to solve the puzzles in ${puzzle}. An average of ${avg}ms to complete a single " +
+    logger.info(s"It took ${total}ms to solve. An average of ${avg}ms to complete a single " +
       s"puzzle. The maximum and minimum times taken to complete a puzzle were ${max}ms and ${min}ms")
   }
 
-
   private def solvePuzzlesUsing(filename : String ) = {
+    import util.Sudoku.{init, solve}
+
     val durations = Source.fromInputStream(getClass.getResourceAsStream(filename)).getLines().map {line => {
-      val l = line.replace('.', '0').map(_ - 0x30).toList
-
       val localStart = System.currentTimeMillis()
-
-      val solution = search(NineSquareUtil.toMapWithGuesses(l)).toList.sortBy(_._1).foldLeft(List[Int]()){case (x,y) => x ++ y._2}
-      val duration = System.currentTimeMillis() - localStart
-
-      if (NineSquareUtil.isSheetOK(solution)) info("Solving... " + l + " took " + duration + "ms") else
-        fail("Failed to solve " + l)
-
-      duration
-
+      solve(init(line))
+      System.currentTimeMillis() - localStart
     }}.toList
-    (durations.sum, durations.min, durations.max, (durations.sum / durations.size))
+    (durations.sum, durations.min, durations.max, durations.sum / durations.size)
   }
 }
