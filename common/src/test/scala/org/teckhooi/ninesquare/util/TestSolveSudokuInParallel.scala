@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.slf4j.LoggerFactory
-import util.Sudoku.{init, solve}
+import org.teckhooi.ninesquare.util.Sudoku.{init, solve}
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -31,14 +31,14 @@ class TestSolveSudokuInParallel extends FunSuite {
     logger.info("Solving easy puzzles...")
     val easyPuzzleStart = System.currentTimeMillis()
     solveAll("/easy.txt")
-    logger.info("All easy puzzles solved using " + (System.currentTimeMillis() - easyPuzzleStart) + "ms")
+    logger.info(s"All puzzles solved using ${System.currentTimeMillis() - easyPuzzleStart}ms")
   }
 
   test("Solve hard puzzles simultaneously") {
     logger.info("Solving hard puzzles...")
     val hardPuzzleStart = System.currentTimeMillis()
     solveAll("/top95.txt")
-    logger.info("All hard puzzles solved using " + (System.currentTimeMillis() - hardPuzzleStart) + "ms")
+    logger.info(s"All puzzles solved using ${System.currentTimeMillis() - hardPuzzleStart}ms")
   }
 
   private def solveAll(filename : String) = {

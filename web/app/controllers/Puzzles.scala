@@ -1,11 +1,12 @@
 package controllers
 
+import org.teckhooi.ninesquare.util.Sudoku._
+import play.Logger
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
+
 import scala.io.Source
 import scala.util.Random
-import play.api.libs.json.Json
-import play.Logger
-import org.teckhooi.ninesquare.util.NineSquareUtil
 
 /**
  *
@@ -27,22 +28,30 @@ class Puzzles extends Controller{
     Ok(pickRandomPuzzleFrom('HARD))
   }
 
+  // TODO refactor with front end sending a String instead
   def checkPuzzle() = Action(parse.json) {request =>
     Logger.debug("Partial puzzle received = " + request.body)
-    Ok(Json.toJson(Map("result" -> NineSquareUtil.isSheetOK(request.body.as[List[Int]]))))
+    Ok(Json.toJson(Map("result" -> 
+      isSolved(init(toStr(request.body.as[List[Int]]))))))
   }
 
+  // TODO refactor with front end sending a String instead
   def solvePuzzle = Action(parse.json) {request =>
     // TODO possiblely mark puzzle as tainted if user do not the solve puzzle on his own accord
     Logger.debug("Puzzle received = " + request.body)
-    Ok(Json.toJson(NineSquareUtil.solve(request.body.as[List[Int]])))
+    solve(init(toStr(request.body.as[List[Int]]))).map(m => Ok(Json.toJson(toPuzzleString(m)))).get
   }
 
+  // TODO refactor with front end sending a String instead
   def submitPuzzle = Action(parse.json) {request =>
     // TODO verify user has logged on otherwise this method is unauthorized. Record puzzle as solved in the user account
     Logger.debug("Puzzle received = " + request.body)
-    Ok(Json.toJson(Map("result" -> NineSquareUtil.isSheetOK(request.body.as[List[Int]]))));
+    Ok(Json.toJson(Map("result" ->
+      isSolved(init(toStr(request.body.as[List[Int]]))))))
   }
+
+  // TODO refactor with front end sending a String instead
+  private def toStr(l: List[Int]) = l.foldLeft("")((s, x) => s + (if (x == 0) '.' else (0x30 + x).toChar))
 
   def pickRandomPuzzleFrom(level : Symbol) = {
     level match {

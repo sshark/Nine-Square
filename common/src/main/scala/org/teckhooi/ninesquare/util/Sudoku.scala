@@ -1,7 +1,7 @@
 // Scala implementation using the algorithm from http://www.norvig.com/sudoku.html
 // with a slight twist
 
-package util
+package org.teckhooi.ninesquare.util
 
 object Sudoku {
   val debug = false
@@ -132,6 +132,8 @@ object Sudoku {
     val result = all.map(y => y.foldLeft(Set.empty[Char])((s,z) => s ++ solution(z)))
     result.size == 1 && result.headOption.map(_.size == 9).getOrElse(false)
   }
+
+  def toPuzzleString(m: Map[String, Set[Char]]) = m.toList.sortBy(_._1).foldLeft(List.empty[Int])((l, s) => l :+ s._2.head - 0x30)
 }
 
 object SudokuApp extends App {
